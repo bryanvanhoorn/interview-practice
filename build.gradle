@@ -8,6 +8,8 @@ repositories {
 
 
 dependencies {
+    compile "org.projectlombok:lombok:1.16.16"
+
     testCompile 'org.codehaus.groovy:groovy-all:2.4.11'
-    testCompile "org.spockframework:spock-core:1.1-groovy-2.4"
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
 }
