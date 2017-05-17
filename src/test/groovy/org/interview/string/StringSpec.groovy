@@ -34,4 +34,33 @@ class StringSpec extends Specification {
         "abcdc"     | false
     }
 
+    // Given two strings, write a method to determine if one is a permutation of the other
+    // if one string is a permutation of the other, it contains all the same characters, likely in a different order
+    @Unroll
+    def "should identify if one string is a permutation of another"() {
+        when:
+        boolean actualOutputValue = StringChecker.isPermutation(inputString1, inputString2)
+
+        then:
+        assert expectedOutputValue == actualOutputValue
+
+        where:
+        inputString1 | inputString2 | expectedOutputValue
+        "act"        | "cat"        | true
+        "bad"        | "abc"        | false
+    }
+
+    @Unroll
+    def "should identify if one string is a permutation of another using a HashTable"() {
+        when:
+        boolean actualOutputValue = StringChecker.isPermutationWithHashTable(inputString1, inputString2)
+
+        then:
+        assert expectedOutputValue == actualOutputValue
+
+        where:
+        inputString1 | inputString2 | expectedOutputValue
+        "act"        | "cat"        | true
+        "bad"        | "abc"        | false
+    }
 }
