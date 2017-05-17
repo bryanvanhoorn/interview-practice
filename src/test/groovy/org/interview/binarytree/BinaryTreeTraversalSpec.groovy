@@ -1,7 +1,6 @@
 package org.interview.binarytree
 
 import spock.lang.Specification
-import org.interview.binarytree.BinaryTreeNode
 
 /*
  *  Using the above data structure that represents a binary tree, write a method to return a list of nodes with a
