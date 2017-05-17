@@ -16,4 +16,19 @@ public class StringChecker {
 
         return true;
     }
+
+    public static boolean containsAllUniqueCharactersNoOtherDataStructures(String inputString) {
+
+        for (int i = 0; i < inputString.length(); i++) {
+            char charToCheck = inputString.charAt(i);
+
+            for(int j = i +1; j < inputString.length(); j++) {
+                if (charToCheck == inputString.charAt(j)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }
