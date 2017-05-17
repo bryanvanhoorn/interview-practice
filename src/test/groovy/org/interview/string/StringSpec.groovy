@@ -20,5 +20,18 @@ class StringSpec extends Specification {
         "abcdc"     | false
     }
 
+    @Unroll
+    def "should identify if string has all unique characters without using extra data structures"() {
+        when:
+        boolean actualOutputValue = StringChecker.containsAllUniqueCharactersNoOtherDataStructures(inputString)
+
+        then:
+        assert expectedOutputValue == actualOutputValue
+
+        where:
+        inputString | expectedOutputValue
+        "abcde"     | true
+        "abcdc"     | false
+    }
 
 }
