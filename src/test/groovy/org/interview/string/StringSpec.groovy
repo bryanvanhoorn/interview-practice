@@ -136,8 +136,7 @@ class StringSpec extends Specification {
     }
 
     /*
-    give an image represented by an NxN matrix, where each pixel in the image is 4 bytes, write
-    a method to rotate the image by 90 degrees. can you do this in place?
+        http://stackoverflow.com/questions/42519/how-do-you-rotate-a-two-dimensional-array
      */
 
     def "should be able to rotate NxN array 90 degrees"() {
@@ -158,10 +157,52 @@ class StringSpec extends Specification {
     int[][] get2DMatrix() {
 
         int[][] intMatrix = [
-            [1,2],
-            [3,4]
+                [1, 2],
+                [3, 4]
         ]
 
         return intMatrix
     }
+
+    /*
+    Zero Matrix:  Write an algorithm such that if an element in an MxN matrix is 0,
+    its entire row and column are set to 0
+     */
+
+    def "if an element in a matrix is 0, we should 0 out the entire row and column"() {
+        given:
+        int[][] inputMatrix = get4x4Matrix()
+
+        when:
+        int[][] actualOutputMatrix = StringChecker.zeroOutRowsAndColumnsContainingZeroes(inputMatrix)
+
+        then:
+        for (int x = 0; x < actualOutputMatrix.length; x++) {
+            for (int y = 0; y < actualOutputMatrix[0].length; y++) {
+                int valueToCheck = actualOutputMatrix[x][y]
+                if (x == 2 || y == 2) {
+                    assert valueToCheck == 0
+                } else {
+                    assert valueToCheck != 0
+                }
+            }
+        }
+        println(actualOutputMatrix)
+    }
+
+    int[][] get4x4Matrix() {
+
+        return [
+                [1, 2, 3, 4],
+                [5, 6, 7, 8],
+                [9, 10, 0, 12],
+                [13, 14, 15, 16]
+        ]
+    }
+
+    /*
+    String rotation:  Assume you have a method isSubstring which checks if one word is a substring
+    of another.  Given strings s1 and s2, write code to check if s2 is a rotation of s1 using only
+    one call to isSubstring.  Example:  "waterbottle" is a rotation of "erbottlewat"
+     */
 }

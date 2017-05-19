@@ -1,9 +1,6 @@
 package org.interview.string;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.*;
 
 public class StringChecker {
 
@@ -214,6 +211,34 @@ public class StringChecker {
         } else {
             return inputString;
         }
+    }
+
+    public static int[][] zeroOutRowsAndColumnsContainingZeroes(int[][] inputMatrix) {
+        Set<Integer> rowsToZeroOut = new HashSet<Integer>();
+        Set<Integer> columnsToZeroOut = new HashSet<Integer>();
+        // search through the matrix and find rows/columns containing 0
+        for(int x = 0; x < inputMatrix.length; x++) {
+            for(int y = 0; y < inputMatrix[x].length; y++) {
+                if (inputMatrix[x][y] == 0) {
+                    rowsToZeroOut.add(x);
+                    columnsToZeroOut.add(y);
+                }
+            }
+        }
+
+        for(Integer rowNumber : rowsToZeroOut) {
+            for (int y = 0; y < inputMatrix[rowNumber].length; y++) {
+                inputMatrix[rowNumber][y] = 0;
+            }
+        }
+
+        for(Integer columnNumber : columnsToZeroOut) {
+            for (int x = 0; x < inputMatrix.length; x++) {
+                inputMatrix[x][columnNumber] = 0;
+            }
+        }
+
+        return inputMatrix;
     }
 
 }
