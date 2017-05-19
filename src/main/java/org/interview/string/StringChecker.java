@@ -241,4 +241,14 @@ public class StringChecker {
         return inputMatrix;
     }
 
+    public static boolean isRotation(String string1, String string2) {
+        String stringToCheck = string1 + string1;
+
+        return isSubstring(string2, stringToCheck);
+    }
+
+    private static boolean isSubstring(String string1, String string2) {
+        return string2.contains(string1);
+    }
+
 }
