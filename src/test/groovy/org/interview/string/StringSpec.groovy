@@ -187,7 +187,6 @@ class StringSpec extends Specification {
                 }
             }
         }
-        println(actualOutputMatrix)
     }
 
     int[][] get4x4Matrix() {
@@ -205,4 +204,19 @@ class StringSpec extends Specification {
     of another.  Given strings s1 and s2, write code to check if s2 is a rotation of s1 using only
     one call to isSubstring.  Example:  "waterbottle" is a rotation of "erbottlewat"
      */
+
+    @Unroll
+    def "should be able to check if string1 is a rotation of string2" () {
+        // concat the string to itself, then do isSubstring() check
+        when:
+        boolean actualOutput = StringChecker.isRotation(string1, string2)
+
+        then:
+        assert expectedOutput == actualOutput
+
+        where:
+        string1 | string2 | expectedOutput
+        "waterbottle" | "erbottlewat" | true
+        "waterbottle" | "rebottlewat" | false
+    }
 }
