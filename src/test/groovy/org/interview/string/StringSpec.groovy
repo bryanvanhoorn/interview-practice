@@ -63,4 +63,19 @@ class StringSpec extends Specification {
         "act"        | "cat"        | true
         "bad"        | "abc"        | false
     }
+
+    @Unroll
+    def "should be able to replace all spaces with '%20'"() {
+        when:
+        String actualUrlifiedString = StringChecker.urlifyString(inputString, trueLength)
+
+        then:
+        assert expectedUrlifiedString == actualUrlifiedString
+
+        where:
+        inputString                               | trueLength | expectedUrlifiedString
+        "this is a string      "                  | 16         | "this%20is%20a%20string"
+        "this has  multiple   spaces            " | 27         | "this%20has%20%20multiple%20%20%20spaces"
+        "abcde"                                   | 5          | "abcde"
+    }
 }
