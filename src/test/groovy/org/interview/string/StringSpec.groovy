@@ -78,4 +78,20 @@ class StringSpec extends Specification {
         "this has  multiple   spaces            " | 27         | "this%20has%20%20multiple%20%20%20spaces"
         "abcde"                                   | 5          | "abcde"
     }
+
+    @Unroll
+    def "should be able to check if a string is a permutation of a palindrome"() {
+        when:
+        boolean actualOutput = StringChecker.isPermutationOfPalindrome(inputString)
+
+        then:
+        assert expectedOutput == actualOutput
+
+        where:
+        inputString | expectedOutput
+        "aacctto"   | true
+        "aocctt"    | false
+        "racecar"   | true
+        "abcde"     | false
+    }
 }
