@@ -1,7 +1,9 @@
 package org.interview.string;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 public class StringChecker {
 
@@ -102,6 +104,35 @@ public class StringChecker {
         }
 
         return String.valueOf(inputStringArray);
+    }
+
+    public static boolean isPermutationOfPalindrome(String inputString) {
+        Map<Character, Integer> characterCounterMap = new HashMap<Character, Integer>();
+        char[] inputStringArray = inputString.toCharArray();
+        for(int i = 0; i < inputStringArray.length; i++) {
+            Character character = Character.valueOf(inputStringArray[i]);
+            if(characterCounterMap.containsKey(character)) {
+                Integer currentCount = characterCounterMap.get(character);
+                currentCount = currentCount + 1;
+                characterCounterMap.put(character, currentCount);
+            } else {
+                characterCounterMap.put(character, 1);
+            }
+        }
+
+        // if 0 or 1 letter have odd-numbered occurrences and all others are even, we're good
+        int oddNumberedLetters = 0;
+        for(Integer count : characterCounterMap.values()) {
+            if (count % 2 != 0) {
+                oddNumberedLetters++;
+            }
+        }
+
+        if (oddNumberedLetters <= 1) {
+            return true;
+        }
+
+        return false;
     }
 
 }
