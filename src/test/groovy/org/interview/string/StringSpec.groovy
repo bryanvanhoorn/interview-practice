@@ -1,5 +1,6 @@
 package org.interview.string
 
+import org.interview.array.ArrayUtils
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -117,12 +118,6 @@ class StringSpec extends Specification {
         "pale"       | "palest"     | false
     }
 
-    /*
-    implement string compression using counts of repeated characters
-    if compressed string is not less then original string, return original string
-    assume string has only uppercase and lowercase letters
-     */
-
     @Unroll
     def "should be able to use simple compression on a string of upper and lower case letters"() {
         when:
@@ -138,5 +133,35 @@ class StringSpec extends Specification {
         "abc"         | "abc"
         "aaaaa"       | "a5"
         "aabCccccaaa" | "a2b1C1c4a3"
+    }
+
+    /*
+    give an image represented by an NxN matrix, where each pixel in the image is 4 bytes, write
+    a method to rotate the image by 90 degrees. can you do this in place?
+     */
+
+    def "should be able to rotate NxN array 90 degrees"() {
+        given:
+        int[][] inputMatrix = get2DMatrix()
+
+        when:
+        int[][] outputMatrix = ArrayUtils.rotate2DMatrix(inputMatrix)
+
+        then:
+        outputMatrix[0][0] == 3
+        outputMatrix[0][1] == 1
+        outputMatrix[1][0] == 4
+        outputMatrix[1][1] == 2
+
+    }
+
+    int[][] get2DMatrix() {
+
+        int[][] intMatrix = [
+            [1,2],
+            [3,4]
+        ]
+
+        return intMatrix
     }
 }
