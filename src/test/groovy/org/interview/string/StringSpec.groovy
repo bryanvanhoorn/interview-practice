@@ -2,7 +2,6 @@ package org.interview.string
 
 import spock.lang.Specification
 import spock.lang.Unroll
-import org.interview.string.StringChecker
 
 class StringSpec extends Specification {
 
@@ -93,5 +92,28 @@ class StringSpec extends Specification {
         "aocctt"    | false
         "racecar"   | true
         "abcde"     | false
+    }
+
+    /*
+    3 types of operations:  insert, replace or remove a char
+    given 2 strings, write a function to check if these strings are 0 or 1 edits away
+     */
+
+    @Unroll
+    def "should be able to check if 2 strings or 0 or 1 edits away from each other"() {
+        when:
+        boolean actualOutput = StringChecker.isZeroOrOneEditsAway(inputString1, inputString2)
+
+        then:
+        assert expectedOutput == actualOutput
+
+        where:
+        inputString1 | inputString2 | expectedOutput
+        "pale"       | "ple"        | true
+        "pale"       | "pales"      | true
+        "pale"       | "bale"       | true
+        "pale"       | "pale"       | true
+        "pale"       | "bake"       | false
+        "pale"       | "palest"     | false
     }
 }
