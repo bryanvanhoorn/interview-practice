@@ -135,4 +135,60 @@ public class StringChecker {
         return false;
     }
 
+    public static boolean isZeroOrOneEditsAway(String inputString1, String inputString2) {
+        // iterate char by char
+        // check if insert helps first
+        // if we make more than one edit, break and return false
+        if (inputString1.equals(inputString2)) {
+            return true;
+        }
+
+        int numberOfDifferences = 0;
+        // if strings are same length, replacement is our only option
+        if (inputString1.length() == inputString2.length()) {
+            // iterate char by char
+            char[] inputString1Array = inputString1.toCharArray();
+            char[] inputString2Array = inputString2.toCharArray();
+            for(int i = 0; i < inputString1Array.length; i++) {
+                if (inputString1Array[i] != inputString2Array[i]) {
+                    numberOfDifferences++;
+                }
+            }
+        } else {
+            // if strings are different length, we'll need to insert or remove
+            // iterate char by char
+            char[] shorterStringArray;
+            char[] longerStringArray;
+            if (inputString1.length() < inputString2.length()) {
+                shorterStringArray = inputString1.toCharArray();
+                longerStringArray = inputString2.toCharArray();
+            } else {
+                shorterStringArray = inputString2.toCharArray();
+                longerStringArray = inputString1.toCharArray();
+            }
+
+            if (longerStringArray.length - shorterStringArray.length >= 2) {
+                return false;
+            }
+
+            int index1 = 0, index2 = 0;
+            while(index1 < shorterStringArray.length) {
+                if (shorterStringArray[index1] == longerStringArray[index2]) {
+                    index1++;
+                    index2++;
+                } else {
+                    numberOfDifferences++;
+                    index1++;
+                    index2 += 2;
+                }
+            }
+        }
+
+        if (numberOfDifferences <= 1) {
+            return true;
+        }
+
+        return false;
+    }
+
 }
