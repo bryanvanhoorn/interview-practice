@@ -116,4 +116,27 @@ class StringSpec extends Specification {
         "pale"       | "bake"       | false
         "pale"       | "palest"     | false
     }
+
+    /*
+    implement string compression using counts of repeated characters
+    if compressed string is not less then original string, return original string
+    assume string has only uppercase and lowercase letters
+     */
+
+    @Unroll
+    def "should be able to use simple compression on a string of upper and lower case letters"() {
+        when:
+        String actualOutputString = StringChecker.compressString(inputString)
+
+        then:
+        assert expectedOutputString == actualOutputString
+
+        where:
+        inputString   | expectedOutputString
+        "aabcccccaaa" | "a2b1c5a3"
+        "aabbcc"      | "aabbcc"
+        "abc"         | "abc"
+        "aaaaa"       | "a5"
+        "aabCccccaaa" | "a2b1C1c4a3"
+    }
 }
