@@ -74,4 +74,34 @@ public class StringChecker {
         return true;
     }
 
+    public static String urlifyString(String inputString, int trueLength) {
+        // Too easy  :-)
+        // /inputString = inputString.replaceAll(" ", "%20");
+
+        char[] inputStringArray = inputString.toCharArray();
+
+        int numberOfSpaces = 0;
+        for(int i = 0; i < trueLength; i++) {
+            if (inputStringArray[i] == ' ') {
+                numberOfSpaces++;
+            }
+        }
+
+        int index = trueLength + (numberOfSpaces * 2);
+
+        for(int i = trueLength - 1; i >= 0; i--) {
+            if(inputStringArray[i] == ' ') {
+                inputStringArray[index - 1] = '0';
+                inputStringArray[index - 2] = '2';
+                inputStringArray[index - 3] = '%';
+                index -= 3;
+            } else {
+                inputStringArray[index - 1] = inputStringArray[i];
+                index--;
+            }
+        }
+
+        return String.valueOf(inputStringArray);
+    }
+
 }
