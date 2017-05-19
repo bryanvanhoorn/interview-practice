@@ -217,8 +217,8 @@ public class StringChecker {
         Set<Integer> rowsToZeroOut = new HashSet<Integer>();
         Set<Integer> columnsToZeroOut = new HashSet<Integer>();
         // search through the matrix and find rows/columns containing 0
-        for(int x = 0; x < inputMatrix.length; x++) {
-            for(int y = 0; y < inputMatrix[x].length; y++) {
+        for (int x = 0; x < inputMatrix.length; x++) {
+            for (int y = 0; y < inputMatrix[x].length; y++) {
                 if (inputMatrix[x][y] == 0) {
                     rowsToZeroOut.add(x);
                     columnsToZeroOut.add(y);
@@ -226,13 +226,13 @@ public class StringChecker {
             }
         }
 
-        for(Integer rowNumber : rowsToZeroOut) {
+        for (Integer rowNumber : rowsToZeroOut) {
             for (int y = 0; y < inputMatrix[rowNumber].length; y++) {
                 inputMatrix[rowNumber][y] = 0;
             }
         }
 
-        for(Integer columnNumber : columnsToZeroOut) {
+        for (Integer columnNumber : columnsToZeroOut) {
             for (int x = 0; x < inputMatrix.length; x++) {
                 inputMatrix[x][columnNumber] = 0;
             }
