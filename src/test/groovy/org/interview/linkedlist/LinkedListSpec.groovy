@@ -1,13 +1,10 @@
 package org.interview.linkedlist
 
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class LinkedListSpec extends Specification {
 
-    /*
-    Write code to remove duplicates from an unsorted linked list.
-    Bonus:  How would you solve this problem if a temporary buffer is not allowed?
-     */
     def "should be able to remove duplicates from an unsorted singly linked list"() {
         given: "we have a linked list with one dupe in it"
         LinkedListNode headNode = getLinkedListWithDupes()
@@ -25,7 +22,7 @@ class LinkedListSpec extends Specification {
         assert headNode.getNextNode().getNextNode().getData() == 5
         assert headNode.getNextNode().getNextNode().getNextNode().getData() == 4
         assert headNode.getNextNode().getNextNode().getNextNode().getNextNode().getData() == 3
-        assert headNode.getNextNode().getNextNode().getNextNode().getNextNode().getNextNode() ==null
+        assert headNode.getNextNode().getNextNode().getNextNode().getNextNode().getNextNode() == null
     }
 
     def "should be able to remove duplicates from an unsorted singly linked list without using extra data structure"() {
@@ -45,7 +42,7 @@ class LinkedListSpec extends Specification {
         assert headNode.getNextNode().getNextNode().getData() == 5
         assert headNode.getNextNode().getNextNode().getNextNode().getData() == 4
         assert headNode.getNextNode().getNextNode().getNextNode().getNextNode().getData() == 3
-        assert headNode.getNextNode().getNextNode().getNextNode().getNextNode().getNextNode() ==null
+        assert headNode.getNextNode().getNextNode().getNextNode().getNextNode().getNextNode() == null
     }
 
     LinkedListNode getLinkedListWithDupes() {
@@ -62,7 +59,7 @@ class LinkedListSpec extends Specification {
     void addNodeToList(LinkedListNode node, int data) {
 
         LinkedListNode currentEndOfList = node
-        while(currentEndOfList.getNextNode() != null) {
+        while (currentEndOfList.getNextNode() != null) {
             currentEndOfList = currentEndOfList.getNextNode()
         }
 
@@ -73,17 +70,30 @@ class LinkedListSpec extends Specification {
     int countNodesInList(LinkedListNode headNode) {
         LinkedListNode currentEndOfList = headNode
         int nodeCounter = 1
-        while(currentEndOfList.getNextNode() != null) {
+        while (currentEndOfList.getNextNode() != null) {
             nodeCounter++
             currentEndOfList = currentEndOfList.getNextNode()
         }
 
         return nodeCounter
     }
+    
+    @Unroll
+    def "should be able to find the kth to last element of a singly linked list"() {
+        given:
+        LinkedListNode headNode = getLinkedListWithDupes()
 
-    /*
-    Implement an algorithm to find the kth to last element of a singly linked list.
-     */
+        when:
+        LinkedListNode kthToLastNode = LinkedListUtils.getKthToLastElementOfList(headNode, k)
+
+        then:
+        kthToLastNode.getData() == expectedNodeData
+
+        where:
+        k | expectedNodeData
+        2 | 3
+        4 | 5
+    }
 
     /*
     Implement an algorithm to delete a node in the middle (i.e. any node but the first and last node, not necessarily
