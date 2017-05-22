@@ -53,4 +53,26 @@ public class LinkedListUtils {
         }
     }
 
+    public static LinkedListNode getKthToLastElementOfList(LinkedListNode headNode, int k) {
+        // need 2 pointers:
+        // one at beginning, and one at kth node.  iterate both until second pointer is at end
+        // first pointer will have the node we need
+        LinkedListNode leadNode = headNode;
+        LinkedListNode followerNode = headNode;
+        int nodeCounter = 1;
+
+        while(leadNode.getNextNode() != null && nodeCounter < k) {
+            leadNode = leadNode.getNextNode();
+            nodeCounter++;
+        }
+
+        // Lead node is now pointed at kth element in the list
+        while(leadNode.getNextNode() != null) {
+            leadNode = leadNode.getNextNode();
+            followerNode = followerNode.getNextNode();
+        }
+
+        return followerNode;
+    }
+
 }
