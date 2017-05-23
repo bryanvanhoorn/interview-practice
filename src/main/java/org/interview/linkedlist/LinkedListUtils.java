@@ -75,4 +75,21 @@ public class LinkedListUtils {
         return followerNode;
     }
 
+    public static void removeNode(LinkedListNode nodeToRemove) {
+        LinkedListNode currentNode = nodeToRemove;
+        LinkedListNode nextNode = currentNode.getNextNode();
+
+        while(nextNode != null) {
+            currentNode.setData(nextNode.getData());
+
+            if (nextNode.getNextNode() == null) {
+                currentNode.setNextNode(null);
+                nextNode = null;
+            } else {
+                currentNode = nextNode;
+                nextNode = nextNode.getNextNode();
+            }
+        }
+    }
+
 }
