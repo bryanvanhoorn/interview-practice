@@ -121,6 +121,38 @@ class LinkedListSpec extends Specification {
     greater than or equal to x.  If x is contained within the list, the values of x only need to be after the
     elements less than x.  The partition element x can appear anywhere in the "right partition"; it does not need to
     appear between the left and right partitions.
+
+    3->5->8->5->10->2->1 (partition =5)
+    3->1->2->10->5->5->8
      */
+    def "should be able to partition a linked list around value x"() {
+        given:
+        LinkedListNode headNode = getLinkedList()
+
+        when:
+        headNode = LinkedListUtils.partitionAround(headNode, 5)
+
+        then:
+        assert headNode.getData() == 1
+        assert headNode.getNextNode().getData() == 2
+        assert headNode.getNextNode().getNextNode().getData() == 3
+        assert headNode.getNextNode().getNextNode().getNextNode().getData() == 5
+        assert headNode.getNextNode().getNextNode().getNextNode().getNextNode().getData() == 8
+        assert headNode.getNextNode().getNextNode().getNextNode().getNextNode().getNextNode().getData() == 5
+        assert headNode.getNextNode().getNextNode().getNextNode().getNextNode().getNextNode().getNextNode().getData() == 10
+        assert headNode.getNextNode().getNextNode().getNextNode().getNextNode().getNextNode().getNextNode().getNextNode() == null
+    }
+
+    LinkedListNode getLinkedList() {
+        LinkedListNode headNode = new LinkedListNode(3)
+        addNodeToList(headNode, 5)
+        addNodeToList(headNode, 8)
+        addNodeToList(headNode, 5)
+        addNodeToList(headNode, 10)
+        addNodeToList(headNode, 2)
+        addNodeToList(headNode, 1)
+
+        return headNode
+    }
 
 }

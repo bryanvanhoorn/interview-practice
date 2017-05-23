@@ -92,4 +92,33 @@ public class LinkedListUtils {
         }
     }
 
+    public static LinkedListNode partitionAround(LinkedListNode headNode, int partitionValue) {
+        /*
+        solution1:  create list of nodes < partitionVal
+                    create list of nodes >= partitionVal
+                    iterate through lists and stitch them together into linked list
+
+        solution2:  iterate through nodes
+                    if node < partitionVal, move it to beginning of linkedlist
+         */
+        LinkedListNode currentNode = headNode;
+        LinkedListNode nextNode = currentNode.getNextNode();
+
+        while(nextNode != null) {
+            if (nextNode.getData() < partitionValue) {
+                // move it to beginning of list
+                LinkedListNode nextNodeAfterMove = nextNode.getNextNode();
+                nextNode.setNextNode(headNode);
+                headNode = nextNode;
+                currentNode.setNextNode(nextNodeAfterMove);
+            } else {
+                currentNode = nextNode;
+            }
+            nextNode = currentNode.getNextNode();
+        }
+
+        return headNode;
+
+    }
+
 }
