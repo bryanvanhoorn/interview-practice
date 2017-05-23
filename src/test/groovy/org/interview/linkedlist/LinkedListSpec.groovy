@@ -77,7 +77,7 @@ class LinkedListSpec extends Specification {
 
         return nodeCounter
     }
-    
+
     @Unroll
     def "should be able to find the kth to last element of a singly linked list"() {
         given:
@@ -95,14 +95,26 @@ class LinkedListSpec extends Specification {
         4 | 5
     }
 
-    /*
-    Implement an algorithm to delete a node in the middle (i.e. any node but the first and last node, not necessarily
-    the exact middle) of a singly linked list, given only access to that node.
+    def "should be able to remove a node from the middle of a singly linked list"() {
+        given:
+        LinkedListNode headNode = getLinkedListWithDupes()
+        assert countNodesInList(headNode) == 6
+        LinkedListNode thirdToLastNode = LinkedListUtils.getKthToLastElementOfList(headNode, 3)
 
-    Example:  input is the node c in this list:  a->b->c->d->e->f
-    Result:  Nothing is returned, but list now looks like:  a->b->d->e->f
+        when:
+        LinkedListUtils.removeNode(thirdToLastNode)
 
-     */
+        then:
+        // assert that traversing the list gives us the correct numbers, minus the dupe
+        // assert that length of the list is now 1 less
+        assert countNodesInList(headNode) == 5
+        assert headNode.getData() == 1
+        assert headNode.getNextNode().getData() == 2
+        assert headNode.getNextNode().getNextNode().getData() == 5
+        assert headNode.getNextNode().getNextNode().getNextNode().getData() == 3
+        assert headNode.getNextNode().getNextNode().getNextNode().getNextNode().getData() == 4
+        assert headNode.getNextNode().getNextNode().getNextNode().getNextNode().getNextNode() == null
+    }
 
     /*
     Write code to partition a linked list around a value x, such that all nodes less than x come before all nodes
