@@ -121,4 +121,58 @@ public class LinkedListUtils {
 
     }
 
+    public static LinkedListNode addTwoNumbersInReverseOrder(LinkedListNode firstNumberNode, LinkedListNode secondNumberNode) {
+        // start with pointers to head of both
+        // get data, add, store any remainder in a temp variable
+        // advance both lists to next node
+        // get data, add data and remainder from previous step, store remainder in temp
+        LinkedListNode solutionListHeadNode = new LinkedListNode(0);
+        LinkedListNode solutionListCurrentNode = solutionListHeadNode;
+
+        int carryOver = 0;
+        while(firstNumberNode != null || secondNumberNode != null) {
+            int firstNumberData = 0;
+            if (firstNumberNode != null) {
+                firstNumberData = firstNumberNode.getData();
+            }
+
+            int secondNumberData = 0;
+            if (secondNumberNode != null) {
+                secondNumberData = secondNumberNode.getData();
+            }
+
+            int total = firstNumberData + secondNumberData + carryOver;
+
+            if (total >= 10) {
+                carryOver = 1;
+                total = total - 10;
+            } else {
+                carryOver = 0;
+            }
+
+            solutionListCurrentNode.setData(total);
+
+            //advance to the next nodes in our lists
+            firstNumberNode = firstNumberNode.getNextNode();
+            secondNumberNode = secondNumberNode.getNextNode();
+
+            if (firstNumberNode != null || secondNumberNode != null) {
+                // add an empty node for the next loop
+                LinkedListNode nextNode = new LinkedListNode(0);
+                solutionListCurrentNode.setNextNode(nextNode);
+                solutionListCurrentNode = nextNode;
+            }
+        }
+
+        if(carryOver > 0) {
+            LinkedListNode nextNode = new LinkedListNode(carryOver);
+            solutionListCurrentNode.setNextNode(nextNode);
+        }
+
+        return solutionListHeadNode;
+    }
+
+    public static LinkedListNode addTwoNumbersInForwardOrder(LinkedListNode firstNumber, LinkedListNode secondNumber) {
+        return firstNumber;
+    }
 }
