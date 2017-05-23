@@ -155,4 +155,63 @@ class LinkedListSpec extends Specification {
         return headNode
     }
 
+    /*
+    You have two numbers represented by a LinkedList, where each node contains a single digit.
+    Digits are stored in reverse order, such that the 1's digit is at the head of the list.  Write a function
+    that adds the two numbers and returns the sum as a linked list.
+     */
+    def "should be able to add 2 numbers represented as linked lists with 1's digit at the head"() {
+        given:
+        LinkedListNode firstNumberNode = new LinkedListNode(3)
+        addNodeToList(firstNumberNode, 5)
+        addNodeToList(firstNumberNode, 8)
+
+        LinkedListNode secondNumberNode = new LinkedListNode(1)
+        addNodeToList(secondNumberNode, 2)
+        addNodeToList(secondNumberNode, 3)
+
+        when:
+        LinkedListNode actualOutputList = LinkedListUtils.addTwoNumbersInReverseOrder(firstNumberNode, secondNumberNode)
+
+        then:
+        assert actualOutputList.getData() == 4
+        assert actualOutputList.getNextNode().getData() == 7
+        assert actualOutputList.getNextNode().getNextNode().getData() == 1
+        assert actualOutputList.getNextNode().getNextNode().getNextNode().getData() == 1
+        assert actualOutputList.getNextNode().getNextNode().getNextNode().getNextNode() == null
+    }
+
+    def "should be able to add 2 numbers represented as linked lists with 1's digit at the tail"() {
+        given:
+        LinkedListNode firstNumberNode = new LinkedListNode(3)
+        addNodeToList(firstNumberNode, 5)
+        addNodeToList(firstNumberNode, 8)
+
+        LinkedListNode secondNumberNode = new LinkedListNode(1)
+        addNodeToList(secondNumberNode, 2)
+        addNodeToList(secondNumberNode, 3)
+
+        when:
+        LinkedListNode actualOutputList = LinkedListUtils.addTwoNumbersInForwardOrder(firstNumberNode, secondNumberNode)
+
+        then:
+        assert actualOutputList.getData() == 4
+        assert actualOutputList.getNextNode().getData() == 8
+        assert actualOutputList.getNextNode().getNextNode().getData() == 1
+        assert actualOutputList.getNextNode().getNextNode().getNextNode() == null
+    }
+
+    /*
+    Implement a function to check if a linked list is  palindrome
+     */
+
+    /*
+    Given two singly linked lists, determine if the two lists intersect.  Return the intersecting node.  Node that
+    the intersection is defined based on reference, not value.
+     */
+
+    /*
+    Given a circular linked list, implement an algorithm that returns the node at the beginning of the loop.
+     */
+
 }
