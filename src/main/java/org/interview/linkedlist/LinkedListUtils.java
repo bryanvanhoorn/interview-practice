@@ -173,6 +173,51 @@ public class LinkedListUtils {
     }
 
     public static LinkedListNode addTwoNumbersInForwardOrder(LinkedListNode firstNumber, LinkedListNode secondNumber) {
-        return firstNumber;
+        /*
+        3 - 5 - 8
+        1 - 2 - 3
+        recursion?
+         */
+        LinkedListNode solutionListHeadNode = new LinkedListNode(0);
+        int carryOver = addTwoNodes(firstNumber, secondNumber, solutionListHeadNode);
+        if (carryOver > 0) {
+            solutionListHeadNode.setData(carryOver);
+            return solutionListHeadNode;
+        } else {
+            return solutionListHeadNode.getNextNode();
+        }
+    }
+
+    private static int addTwoNodes(LinkedListNode firstNumber, LinkedListNode secondNumber, LinkedListNode prevNode) {
+
+        LinkedListNode newNode = new LinkedListNode(0);
+        prevNode.setNextNode(newNode);
+
+        int firstValue = 0;
+        int secondValue = 0;
+
+        if (firstNumber != null) {
+            firstValue = firstNumber.getData();
+        }
+
+        if (secondNumber != null) {
+            secondValue = secondNumber.getData();
+        }
+
+        int carryOver = 0;
+        int nodeValue = firstValue + secondValue;
+        if (nodeValue > 10) {
+            nodeValue = nodeValue - 10;
+            carryOver = 1;
+        }
+
+        int carryOverFromNextNodes = 0;
+        if(firstNumber.getNextNode() != null || secondNumber.getNextNode() != null) {
+            carryOverFromNextNodes = addTwoNodes(firstNumber.getNextNode(), secondNumber.getNextNode(), newNode);
+        }
+
+        newNode.setData(nodeValue + carryOverFromNextNodes);
+
+        return carryOver;
     }
 }
