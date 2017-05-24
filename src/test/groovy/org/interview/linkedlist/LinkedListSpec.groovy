@@ -201,6 +201,27 @@ class LinkedListSpec extends Specification {
         assert actualOutputList.getNextNode().getNextNode().getNextNode() == null
     }
 
+    def "should be able to add 2 numbers represented as linked lists with 1's digit at the tail and multiple carryover digits"() {
+        given:
+        LinkedListNode firstNumberNode = new LinkedListNode(8)
+        addNodeToList(firstNumberNode, 5)
+        addNodeToList(firstNumberNode, 8)
+
+        LinkedListNode secondNumberNode = new LinkedListNode(4)
+        addNodeToList(secondNumberNode, 2)
+        addNodeToList(secondNumberNode, 3)
+
+        when:
+        LinkedListNode actualOutputList = LinkedListUtils.addTwoNumbersInForwardOrder(firstNumberNode, secondNumberNode)
+
+        then:
+        assert actualOutputList.getData() == 1
+        assert actualOutputList.getNextNode().getData() == 2
+        assert actualOutputList.getNextNode().getNextNode().getData() == 8
+        assert actualOutputList.getNextNode().getNextNode().getNextNode().getData() == 1
+        assert actualOutputList.getNextNode().getNextNode().getNextNode().getNextNode() == null
+    }
+
     /*
     Implement a function to check if a linked list is  palindrome
      */
