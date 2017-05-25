@@ -14,12 +14,12 @@ public class LinkedListUtils {
 
         listContains[currentNode.getData()] = true;
 
-        while(currentNode.getNextNode() != null) {
+        while (currentNode.getNextNode() != null) {
 
             previousNode = currentNode;
             currentNode = currentNode.getNextNode();
 
-            if(listContains[currentNode.getData()]) {
+            if (listContains[currentNode.getData()]) {
                 removeNodeFromLinkedList(previousNode, currentNode);
                 currentNode = previousNode;
             } else {
@@ -38,7 +38,7 @@ public class LinkedListUtils {
         int valueToCompare;
 
 
-        while(currentHeadNode.getNextNode() != null) {
+        while (currentHeadNode.getNextNode() != null) {
             valueToCompare = currentHeadNode.getData();
 
             // loop through the rest of the nodes and look for this data
@@ -65,13 +65,13 @@ public class LinkedListUtils {
         LinkedListNode followerNode = headNode;
         int nodeCounter = 1;
 
-        while(leadNode.getNextNode() != null && nodeCounter < k) {
+        while (leadNode.getNextNode() != null && nodeCounter < k) {
             leadNode = leadNode.getNextNode();
             nodeCounter++;
         }
 
         // Lead node is now pointed at kth element in the list
-        while(leadNode.getNextNode() != null) {
+        while (leadNode.getNextNode() != null) {
             leadNode = leadNode.getNextNode();
             followerNode = followerNode.getNextNode();
         }
@@ -83,7 +83,7 @@ public class LinkedListUtils {
         LinkedListNode currentNode = nodeToRemove;
         LinkedListNode nextNode = currentNode.getNextNode();
 
-        while(nextNode != null) {
+        while (nextNode != null) {
             currentNode.setData(nextNode.getData());
 
             if (nextNode.getNextNode() == null) {
@@ -108,7 +108,7 @@ public class LinkedListUtils {
         LinkedListNode currentNode = headNode;
         LinkedListNode nextNode = currentNode.getNextNode();
 
-        while(nextNode != null) {
+        while (nextNode != null) {
             if (nextNode.getData() < partitionValue) {
                 // move it to beginning of list
                 LinkedListNode nextNodeAfterMove = nextNode.getNextNode();
@@ -134,7 +134,7 @@ public class LinkedListUtils {
         LinkedListNode solutionListCurrentNode = solutionListHeadNode;
 
         int carryOver = 0;
-        while(firstNumberNode != null || secondNumberNode != null) {
+        while (firstNumberNode != null || secondNumberNode != null) {
             int firstNumberData = 0;
             if (firstNumberNode != null) {
                 firstNumberData = firstNumberNode.getData();
@@ -168,7 +168,7 @@ public class LinkedListUtils {
             }
         }
 
-        if(carryOver > 0) {
+        if (carryOver > 0) {
             LinkedListNode nextNode = new LinkedListNode(carryOver);
             solutionListCurrentNode.setNextNode(nextNode);
         }
@@ -216,7 +216,7 @@ public class LinkedListUtils {
         }
 
         int carryOverFromNextNodes = 0;
-        if(firstNumber.getNextNode() != null || secondNumber.getNextNode() != null) {
+        if (firstNumber.getNextNode() != null || secondNumber.getNextNode() != null) {
             carryOverFromNextNodes = addTwoNodes(firstNumber.getNextNode(), secondNumber.getNextNode(), newNode);
         }
 
@@ -230,13 +230,13 @@ public class LinkedListUtils {
 
         LinkedListNode currentNode = headNode;
         stackOfListNodes.push(currentNode.getData());
-        while(currentNode.getNextNode() != null) {
+        while (currentNode.getNextNode() != null) {
             currentNode = currentNode.getNextNode();
             stackOfListNodes.push(currentNode.getData());
         }
 
         currentNode = headNode;
-        while(currentNode != null) {
+        while (currentNode != null) {
             if (currentNode.getData() != stackOfListNodes.pop()) {
                 return false;
             }
@@ -249,13 +249,13 @@ public class LinkedListUtils {
     public static LinkedListNode getIntersectingNode(LinkedListNode list1HeadNode, LinkedListNode list2HeadNode) {
         Set<LinkedListNode> list1Nodes = new HashSet<LinkedListNode>();
 
-        while(list1HeadNode != null) {
+        while (list1HeadNode != null) {
             list1Nodes.add(list1HeadNode);
             list1HeadNode = list1HeadNode.getNextNode();
         }
 
-        while(list2HeadNode != null) {
-            if(list1Nodes.contains(list2HeadNode)) {
+        while (list2HeadNode != null) {
+            if (list1Nodes.contains(list2HeadNode)) {
                 return list2HeadNode;
             }
             list2HeadNode = list2HeadNode.getNextNode();
@@ -270,23 +270,23 @@ public class LinkedListUtils {
 
         LinkedListNode list1CurrentNode = list1HeadNode;
         LinkedListNode list2CurrentNode = list2HeadNode;
-        if(list1Length > list2Length) {
+        if (list1Length > list2Length) {
             // list 1 is longer.  advance the pointer forward on list 1
-            while(list1Length > list2Length) {
+            while (list1Length > list2Length) {
                 list1CurrentNode = list1CurrentNode.getNextNode();
                 list1Length--;
             }
 
         } else if (list2Length > list1Length) {
             // list 2 is longer. advance the pointer forward on list 2
-            while(list2Length > list1Length) {
+            while (list2Length > list1Length) {
                 list2CurrentNode = list2CurrentNode.getNextNode();
                 list2Length--;
             }
         }
 
-        while(list1CurrentNode != null && list2CurrentNode != null) {
-            if(list1CurrentNode == list2CurrentNode) {
+        while (list1CurrentNode != null && list2CurrentNode != null) {
+            if (list1CurrentNode == list2CurrentNode) {
                 return list1CurrentNode;
             }
             list1CurrentNode = list1CurrentNode.getNextNode();
@@ -298,10 +298,30 @@ public class LinkedListUtils {
 
     private static int getLengthOfList(LinkedListNode listHeadNode) {
         int listLength = 0;
-        while(listHeadNode != null) {
+        while (listHeadNode != null) {
             listLength++;
             listHeadNode = listHeadNode.getNextNode();
         }
         return listLength;
+    }
+
+    public static LinkedListNode getNodeThatBeginsLoop(LinkedListNode headNode) {
+        LinkedListNode pointer1 = headNode;
+        LinkedListNode pointer2 = headNode.getNextNode();
+
+        while (pointer1 != null && pointer2 != null) {
+            if (pointer1 == pointer2) {
+                return pointer1;
+            }
+
+            pointer1 = pointer1.getNextNode();
+            if (pointer2.getNextNode() != null) {
+                pointer2 = pointer2.getNextNode().getNextNode();
+            } else {
+                pointer2 = pointer2.getNextNode();
+            }
+        }
+
+        return null;
     }
 }
