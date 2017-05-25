@@ -131,6 +131,7 @@ class LinkedListSpec extends Specification {
     3->5->8->5->10->2->1 (partition =5)
     3->1->2->10->5->5->8
      */
+
     def "should be able to partition a linked list around value x"() {
         given:
         LinkedListNode headNode = getLinkedList()
@@ -166,6 +167,7 @@ class LinkedListSpec extends Specification {
     Digits are stored in reverse order, such that the 1's digit is at the head of the list.  Write a function
     that adds the two numbers and returns the sum as a linked list.
      */
+
     def "should be able to add 2 numbers represented as linked lists with 1's digit at the head"() {
         given:
         LinkedListNode firstNumberNode = new LinkedListNode(3)
@@ -228,7 +230,7 @@ class LinkedListSpec extends Specification {
         assert actualOutputList.getNextNode().getNextNode().getNextNode().getNextNode() == null
     }
 
-    def "should be able to check if a linked list is a palindrome" () {
+    def "should be able to check if a linked list is a palindrome"() {
         given:
         LinkedListNode headNodeOfPalindromeList = getPalindromeLinkedList()
 
@@ -249,7 +251,7 @@ class LinkedListSpec extends Specification {
         return headNode
     }
 
-    def "should be able to check if a linked list is not a palindrome" () {
+    def "should be able to check if a linked list is not a palindrome"() {
         given:
         LinkedListNode headNodeOfPalindromeList = getNonPalindromeLinkedList()
 
@@ -279,6 +281,7 @@ class LinkedListSpec extends Specification {
     - could iterate through 1st list and load all nodes into a set
         - for each node in the second list, see if it exists in the set
      */
+
     def "should be able to determine if 2 same-length linked lists intersect"() {
         given:
         LinkedListNode list1HeadNode = new LinkedListNode(1)
@@ -323,8 +326,24 @@ class LinkedListSpec extends Specification {
         assert intersectingNode == secondToLastNode
     }
 
-    /*
-    Given a circular linked list, implement an algorithm that returns the node at the beginning of the loop.
-     */
+    def "should be able to identify the node that begins a loop in a linked list"() {
+        given: "linked list with a loop"
+        LinkedListNode node1 = new LinkedListNode(1)
+        LinkedListNode node2 = new LinkedListNode(2)
+        LinkedListNode node3 = new LinkedListNode(3)
+        LinkedListNode node4 = new LinkedListNode(4)
+        LinkedListNode node5 = new LinkedListNode(5)
+        node1.setNextNode(node2)
+        node2.setNextNode(node3)
+        node3.setNextNode(node4)
+        node4.setNextNode(node5)
+        node5.setNextNode(node3)
+
+        when:
+        LinkedListNode loopStartingNode = LinkedListUtils.getNodeThatBeginsLoop(node1)
+
+        then:
+        assert loopStartingNode == node3
+    }
 
 }
