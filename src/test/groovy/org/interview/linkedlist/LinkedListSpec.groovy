@@ -58,13 +58,19 @@ class LinkedListSpec extends Specification {
 
     void addNodeToList(LinkedListNode node, int data) {
 
+        LinkedListNode currentEndOfList = getEndOfList(node)
+
+        LinkedListNode nextNode = new LinkedListNode(data)
+        currentEndOfList.setNextNode(nextNode)
+    }
+
+    LinkedListNode getEndOfList(LinkedListNode node) {
         LinkedListNode currentEndOfList = node
         while (currentEndOfList.getNextNode() != null) {
             currentEndOfList = currentEndOfList.getNextNode()
         }
 
-        LinkedListNode nextNode = new LinkedListNode(data)
-        currentEndOfList.setNextNode(nextNode)
+        return currentEndOfList
     }
 
     int countNodesInList(LinkedListNode headNode) {
@@ -222,10 +228,6 @@ class LinkedListSpec extends Specification {
         assert actualOutputList.getNextNode().getNextNode().getNextNode().getNextNode() == null
     }
 
-    /*
-    Implement a function to check if a linked list is  palindrome
-     */
-
     def "should be able to check if a linked list is a palindrome" () {
         given:
         LinkedListNode headNodeOfPalindromeList = getPalindromeLinkedList()
@@ -271,7 +273,55 @@ class LinkedListSpec extends Specification {
     /*
     Given two singly linked lists, determine if the two lists intersect.  Return the intersecting node.  Node that
     the intersection is defined based on reference, not value.
+
+    O(n^2) - get first node of first list, iterate through second list looking for match.  repeat
+    - can be done in O(A+B) time and O(1) additional space
+    - could iterate through 1st list and load all nodes into a set
+        - for each node in the second list, see if it exists in the set
      */
+    def "should be able to determine if 2 same-length linked lists intersect"() {
+        given:
+        LinkedListNode list1HeadNode = new LinkedListNode(1)
+        addNodeToList(list1HeadNode, 2)
+        addNodeToList(list1HeadNode, 3)
+        addNodeToList(list1HeadNode, 4)
+
+        LinkedListNode list2HeadNode = new LinkedListNode(5)
+        addNodeToList(list2HeadNode, 6)
+        LinkedListNode endOfList = getEndOfList(list2HeadNode)
+
+        LinkedListNode secondToLastNode = LinkedListUtils.getKthToLastElementOfList(list1HeadNode, 2)
+        endOfList.setNextNode(secondToLastNode)
+
+        when:
+        LinkedListNode intersectingNode = LinkedListUtils.getIntersectingNode(list1HeadNode, list2HeadNode)
+
+        then:
+        assert intersectingNode == secondToLastNode
+    }
+
+    def "should be able to determine if 2 different length linked lists intersect without using hash set"() {
+        given:
+        LinkedListNode list1HeadNode = new LinkedListNode(1)
+        addNodeToList(list1HeadNode, 2)
+        addNodeToList(list1HeadNode, 3)
+        addNodeToList(list1HeadNode, 4)
+
+        LinkedListNode list2HeadNode = new LinkedListNode(5)
+        addNodeToList(list2HeadNode, 6)
+        addNodeToList(list2HeadNode, 7)
+        addNodeToList(list2HeadNode, 8)
+        LinkedListNode endOfList = getEndOfList(list2HeadNode)
+
+        LinkedListNode secondToLastNode = LinkedListUtils.getKthToLastElementOfList(list1HeadNode, 2)
+        endOfList.setNextNode(secondToLastNode)
+
+        when:
+        LinkedListNode intersectingNode = LinkedListUtils.getIntersectingNodeWithoutUsingHashSet(list1HeadNode, list2HeadNode)
+
+        then:
+        assert intersectingNode == secondToLastNode
+    }
 
     /*
     Given a circular linked list, implement an algorithm that returns the node at the beginning of the loop.

@@ -1,5 +1,7 @@
 package org.interview.linkedlist;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 
 public class LinkedListUtils {
@@ -242,5 +244,64 @@ public class LinkedListUtils {
         }
 
         return true;
+    }
+
+    public static LinkedListNode getIntersectingNode(LinkedListNode list1HeadNode, LinkedListNode list2HeadNode) {
+        Set<LinkedListNode> list1Nodes = new HashSet<LinkedListNode>();
+
+        while(list1HeadNode != null) {
+            list1Nodes.add(list1HeadNode);
+            list1HeadNode = list1HeadNode.getNextNode();
+        }
+
+        while(list2HeadNode != null) {
+            if(list1Nodes.contains(list2HeadNode)) {
+                return list2HeadNode;
+            }
+            list2HeadNode = list2HeadNode.getNextNode();
+        }
+
+        return null;
+    }
+
+    public static LinkedListNode getIntersectingNodeWithoutUsingHashSet(LinkedListNode list1HeadNode, LinkedListNode list2HeadNode) {
+        int list1Length = getLengthOfList(list1HeadNode);
+        int list2Length = getLengthOfList(list2HeadNode);
+
+        LinkedListNode list1CurrentNode = list1HeadNode;
+        LinkedListNode list2CurrentNode = list2HeadNode;
+        if(list1Length > list2Length) {
+            // list 1 is longer.  advance the pointer forward on list 1
+            while(list1Length > list2Length) {
+                list1CurrentNode = list1CurrentNode.getNextNode();
+                list1Length--;
+            }
+
+        } else if (list2Length > list1Length) {
+            // list 2 is longer. advance the pointer forward on list 2
+            while(list2Length > list1Length) {
+                list2CurrentNode = list2CurrentNode.getNextNode();
+                list2Length--;
+            }
+        }
+
+        while(list1CurrentNode != null && list2CurrentNode != null) {
+            if(list1CurrentNode == list2CurrentNode) {
+                return list1CurrentNode;
+            }
+            list1CurrentNode = list1CurrentNode.getNextNode();
+            list2CurrentNode = list2CurrentNode.getNextNode();
+        }
+
+        return null;
+    }
+
+    private static int getLengthOfList(LinkedListNode listHeadNode) {
+        int listLength = 0;
+        while(listHeadNode != null) {
+            listLength++;
+            listHeadNode = listHeadNode.getNextNode();
+        }
+        return listLength;
     }
 }
