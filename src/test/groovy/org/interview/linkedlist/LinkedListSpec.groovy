@@ -226,6 +226,48 @@ class LinkedListSpec extends Specification {
     Implement a function to check if a linked list is  palindrome
      */
 
+    def "should be able to check if a linked list is a palindrome" () {
+        given:
+        LinkedListNode headNodeOfPalindromeList = getPalindromeLinkedList()
+
+        when:
+        boolean actualOutput = LinkedListUtils.isPalindrome(headNodeOfPalindromeList)
+
+        then:
+        assert actualOutput == true
+    }
+
+    LinkedListNode getPalindromeLinkedList() {
+        LinkedListNode headNode = new LinkedListNode(3)
+        addNodeToList(headNode, 5)
+        addNodeToList(headNode, 8)
+        addNodeToList(headNode, 5)
+        addNodeToList(headNode, 3)
+
+        return headNode
+    }
+
+    def "should be able to check if a linked list is not a palindrome" () {
+        given:
+        LinkedListNode headNodeOfPalindromeList = getNonPalindromeLinkedList()
+
+        when:
+        boolean actualOutput = LinkedListUtils.isPalindrome(headNodeOfPalindromeList)
+
+        then:
+        assert actualOutput == false
+    }
+
+    LinkedListNode getNonPalindromeLinkedList() {
+        LinkedListNode headNode = new LinkedListNode(3)
+        addNodeToList(headNode, 2)
+        addNodeToList(headNode, 8)
+        addNodeToList(headNode, 5)
+        addNodeToList(headNode, 3)
+
+        return headNode
+    }
+
     /*
     Given two singly linked lists, determine if the two lists intersect.  Return the intersecting node.  Node that
     the intersection is defined based on reference, not value.

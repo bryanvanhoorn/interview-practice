@@ -1,5 +1,7 @@
 package org.interview.linkedlist;
 
+import java.util.Stack;
+
 public class LinkedListUtils {
 
     public static void removeDuplicates(LinkedListNode headNode) {
@@ -219,5 +221,26 @@ public class LinkedListUtils {
         newNode.setData(nodeValue + carryOverFromNextNodes);
 
         return carryOver;
+    }
+
+    public static boolean isPalindrome(LinkedListNode headNode) {
+        Stack<Integer> stackOfListNodes = new Stack<Integer>();
+
+        LinkedListNode currentNode = headNode;
+        stackOfListNodes.push(currentNode.getData());
+        while(currentNode.getNextNode() != null) {
+            currentNode = currentNode.getNextNode();
+            stackOfListNodes.push(currentNode.getData());
+        }
+
+        currentNode = headNode;
+        while(currentNode != null) {
+            if (currentNode.getData() != stackOfListNodes.pop()) {
+                return false;
+            }
+            currentNode = currentNode.getNextNode();
+        }
+
+        return true;
     }
 }
