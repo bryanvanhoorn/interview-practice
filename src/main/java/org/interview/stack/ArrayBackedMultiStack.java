@@ -15,6 +15,9 @@ public class ArrayBackedMultiStack {
     private int[] topNode = new int[64];
     private int[] bottomNode = new int[64];
 
+    private int[] nextMinimumValue = new int[64];
+    private int[] minimumValueNode = new int[64];
+
     // store the first free slot in the data array
     private int nextFreeIndex = 0;
 
@@ -23,6 +26,7 @@ public class ArrayBackedMultiStack {
         for (int i = 0; i < numberOfStacks; i++) {
             topNode[i] = -1;
             bottomNode[i] = -1;
+            minimumValueNode[i] = -1;
         }
 
         // initialize all spaces in the array as free
@@ -54,6 +58,11 @@ public class ArrayBackedMultiStack {
         // this node is now the next free value, (moves to the front of the free list)
         nextFreeIndex = nextSpot[indexOfDataToPop];
 
+        // if we just popped the minimum value node of this stack, set the minimum value to the next one
+        if (indexOfDataToPop == minimumValueNode[stackNumber]) {
+            minimumValueNode[stackNumber] = nextMinimumValue[indexOfDataToPop];
+        }
+
         return stackData[indexOfDataToPop];
     }
 
@@ -79,8 +88,48 @@ public class ArrayBackedMultiStack {
             bottomNode[stackNumber] = indexForNewDataBeingPushed;
         }
 
+        updateMinimumNode(stackNumber, indexForNewDataBeingPushed, newValue);
+
         // add our data to the array
         stackData[indexForNewDataBeingPushed] = newValue;
+    }
+
+    private void updateMinimumNode(int stackNumber, int indexOfNewDataBeingPushed, int newValue) {
+        // check if this value is smaller than the current min value.  if so, replace
+        if (minimumValueNode[stackNumber] < 0) {
+            // no current minimum, set this value as the min
+            // next for this node essentially points to null to mark it as the bottom of the stack
+            nextMinimumValue[indexOfNewDataBeingPushed] = minimumValueNode[stackNumber];
+            // this node is now the minimum node in the stack
+            minimumValueNode[stackNumber] = indexOfNewDataBeingPushed;
+        } else {
+            // need to insert this node in the linked list in value order
+            // if this node's value is less than current minimum value, set it as the new minimum
+            if (newValue < stackData[minimumValueNode[stackNumber]]) {
+                // next minimum value for this stack now points to the old minimum
+                nextMinimumValue[indexOfNewDataBeingPushed] = minimumValueNode[stackNumber];
+                // this node is now the minimum node in the stack
+                minimumValueNode[stackNumber] = indexOfNewDataBeingPushed;
+            } else {
+                // cycle through the minimum value list until you find a node greater than or
+                // equal to this one.  update the pointers to place the node there
+
+                // minimumValueNode[stackNumber] - this is the index of the minimum value
+                // nextMinimumValue[minimumValueNode[stackNumber]] - this is the index of the next value in the list
+
+                // 1 -> 2 -> 3 -> 4
+
+                int currentMinValueIndex = minimumValueNode[stackNumber];
+                int previousMinValueIndex = -1;
+                while(currentMinValueIndex > 0 && stackData[currentMinValueIndex] < newValue) {
+                    previousMinValueIndex = currentMinValueIndex;
+                    currentMinValueIndex = nextMinimumValue[currentMinValueIndex];
+                }
+                // this is where we insert the node - the data at this index is greater than or equal to our value
+                nextMinimumValue[indexOfNewDataBeingPushed] = nextMinimumValue[previousMinValueIndex];
+                nextMinimumValue[previousMinValueIndex] = indexOfNewDataBeingPushed;
+            }
+        }
     }
 
     public int peek(int stackNumber) {
@@ -99,6 +148,10 @@ public class ArrayBackedMultiStack {
             throw new RuntimeException("nothing on stack " + stackNumber);
         }
         return stackData[bottomNodeOfStack];
+    }
+
+    public int min(int stackNumber) {
+        return stackData[minimumValueNode[stackNumber]];
     }
 
     public boolean isEmpty(int stackNumber) {
