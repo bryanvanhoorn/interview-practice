@@ -13,7 +13,7 @@ public class ArrayBackedMultiStack {
 
     private int[] nextSpot = new int[64];
     private int[] topNode = new int[64];
-    private int[] nextEntry = new int[64];
+    private int[] bottomNode = new int[64];
 
     // store the first free slot in the data array
     private int nextFreeIndex = 0;
@@ -22,6 +22,7 @@ public class ArrayBackedMultiStack {
         // initialize all stacks as empty
         for (int i = 0; i < numberOfStacks; i++) {
             topNode[i] = -1;
+            bottomNode[i] = -1;
         }
 
         // initialize all spaces in the array as free
@@ -38,6 +39,11 @@ public class ArrayBackedMultiStack {
 
         // get index of the top node of this stack
         int indexOfDataToPop = topNode[stackNumber];
+
+        // if top node is also bottom node, then update the bottom node
+        if (indexOfDataToPop == bottomNode[stackNumber]) {
+            bottomNode[stackNumber] = nextSpot[indexOfDataToPop];
+        }
 
         // point top of stack to next node in the stack
         topNode[stackNumber] = nextSpot[indexOfDataToPop];
@@ -68,6 +74,11 @@ public class ArrayBackedMultiStack {
         // set the new top of this stack to point to the spot we just claimed
         topNode[stackNumber] = indexForNewDataBeingPushed;
 
+        // if this stack was empty before, update the bottom node pointer
+        if(bottomNode[stackNumber] < 0) {
+            bottomNode[stackNumber] = indexForNewDataBeingPushed;
+        }
+
         // add our data to the array
         stackData[indexForNewDataBeingPushed] = newValue;
     }
@@ -79,6 +90,15 @@ public class ArrayBackedMultiStack {
             throw new RuntimeException("nothing on stack " + stackNumber);
         }
         return stackData[topNodeOfStack];
+    }
+
+    public int peekBottom(int stackNumber) {
+        int bottomNodeOfStack = bottomNode[stackNumber];
+
+        if (bottomNodeOfStack < 0) {
+            throw new RuntimeException("nothing on stack " + stackNumber);
+        }
+        return stackData[bottomNodeOfStack];
     }
 
     public boolean isEmpty(int stackNumber) {
