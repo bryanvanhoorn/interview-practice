@@ -147,6 +147,33 @@ class StackSpec extends Specification {
         thrown(RuntimeException)
     }
 
+    def "should be able to ask for the minimum value in the stack" () {
+        given:
+        ArrayBackedMultiStack arrayBackedMultiStack = new ArrayBackedMultiStack(3)
+        arrayBackedMultiStack.push(0, 5)
+        arrayBackedMultiStack.push(0, 4)
+
+        when:
+        int minValue = arrayBackedMultiStack.min(0)
+
+        then:
+        assert minValue == 4
+
+        when:
+        arrayBackedMultiStack.push(0, 3)
+        minValue = arrayBackedMultiStack.min(0)
+
+        then:
+        assert minValue == 3
+
+        when:
+        int poppedValue = arrayBackedMultiStack.pop(0)
+        minValue = arrayBackedMultiStack.min(0)
+
+        then:
+        assert poppedValue == 3
+        assert minValue == 4
+    }
 
 
 }
