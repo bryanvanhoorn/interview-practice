@@ -3,7 +3,7 @@ package org.interview.stack
 import spock.lang.Specification
 
 class StackSpec extends Specification {
-    
+
     def "should be able to implement a stack using an array" () {
         given:
         ArrayBackedStack arrayBackedStack = new ArrayBackedStack()
@@ -116,6 +116,36 @@ class StackSpec extends Specification {
     How would you design a stack which, in addition to push and pop, has a function min which returns the minimum element?
     Push, pop and min should all operate in O(1) time.
      */
+    def "should be able to peek at the bottom of the stack" () {
+        given:
+        ArrayBackedMultiStack arrayBackedMultiStack = new ArrayBackedMultiStack(3)
+        arrayBackedMultiStack.push(0, 5)
+        arrayBackedMultiStack.push(0, 4)
+        arrayBackedMultiStack.push(0, 3)
+        arrayBackedMultiStack.push(0, 2)
+
+        when:
+        int peekedValue = arrayBackedMultiStack.peekBottom(0)
+
+        then:
+        assert peekedValue == 5
+
+        when:
+        int poppedValue = arrayBackedMultiStack.pop(0)
+        poppedValue = arrayBackedMultiStack.pop(0)
+        poppedValue = arrayBackedMultiStack.pop(0)
+        poppedValue = arrayBackedMultiStack.pop(0)
+
+        then:
+        assert poppedValue == 5
+        assert arrayBackedMultiStack.isEmpty(0) == true
+
+        when:
+        arrayBackedMultiStack.peekBottom(0)
+
+        then:
+        thrown(RuntimeException)
+    }
 
 
 
