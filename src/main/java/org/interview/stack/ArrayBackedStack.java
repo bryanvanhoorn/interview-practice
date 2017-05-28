@@ -1,7 +1,7 @@
 package org.interview.stack;
 
 public class ArrayBackedStack {
-    private int[] stackData = new int[64];
+    private int[] stackData = new int[16];
     private int topOfStackIndex = -1;
 
     public int pop() {
@@ -28,6 +28,13 @@ public class ArrayBackedStack {
 
     public boolean isEmpty() {
         if (topOfStackIndex < 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isFull() {
+        if (topOfStackIndex == stackData.length - 1) {
             return true;
         }
         return false;
