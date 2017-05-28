@@ -176,4 +176,23 @@ class StackSpec extends Specification {
     }
 
 
+
+
+
+
+    /*
+    Implement a MyQueue class which implements a queue using two stacks.
+     */
+
+    /*
+    Write a program to sort a stack so that the smallest items are on the top.  Can use an additional temporary stack,
+    but may not copy the elements into any other data structure, (such as an array).  Stack supports push, pop, peek and isEmpty
+     */
+
+    /*
+    Animal shelter allows people to adopt dogs or cats based on FIFO.  People must adopt the oldest (based on arrival
+    time) lf all animals at the shelter, or they can select dog or cat, and will get the oldest of the type
+    they choose.  Cannot select which specific animal.  Create the data structures to maintain this system and
+    implement operations such as enqueue, dequeueAny, dequeueDog and dequeueCat.  May use LinkedList.
+     */
 }
