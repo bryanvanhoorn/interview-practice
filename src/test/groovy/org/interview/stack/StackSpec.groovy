@@ -201,10 +201,32 @@ class StackSpec extends Specification {
         assert queue.peek() == 2
     }
 
-    /*
-    Write a program to sort a stack so that the smallest items are on the top.  Can use an additional temporary stack,
-    but may not copy the elements into any other data structure, (such as an array).  Stack supports push, pop, peek and isEmpty
-     */
+    def "should be able to push and pop items on a sorted stack" () {
+        given:
+        SortedStack sortedStack = new SortedStack()
+        assert sortedStack.isEmpty() == true
+
+        when:
+        sortedStack.push(1)
+        sortedStack.push(2)
+
+        then:
+        assert sortedStack.isEmpty() == false
+        assert sortedStack.peek() == 1
+
+        when:
+        int poppedValue = sortedStack.pop()
+
+        then:
+        assert poppedValue == 1
+        assert sortedStack.peek() == 2
+
+        when:
+        sortedStack.push(1)
+
+        then:
+        assert sortedStack.peek() == 1
+    }
 
     /*
     Animal shelter allows people to adopt dogs or cats based on FIFO.  People must adopt the oldest (based on arrival
