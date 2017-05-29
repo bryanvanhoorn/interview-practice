@@ -175,14 +175,31 @@ class StackSpec extends Specification {
         assert minValue == 4
     }
 
+    def "should be able to add and remove items from a stack-backed queue"() {
+        given:
+        MyQueue queue = new MyQueue()
 
+        when:
+        queue.add(1)
 
+        then:
+        assert queue.peek() == 1
 
+        when:
+        queue.add(2)
+        queue.add(3)
+        queue.add(4)
 
+        then:
+        assert queue.peek() == 1
 
-    /*
-    Implement a MyQueue class which implements a queue using two stacks.
-     */
+        when:
+        int removedValue = queue.remove()
+
+        then:
+        assert removedValue == 1
+        assert queue.peek() == 2
+    }
 
     /*
     Write a program to sort a stack so that the smallest items are on the top.  Can use an additional temporary stack,
