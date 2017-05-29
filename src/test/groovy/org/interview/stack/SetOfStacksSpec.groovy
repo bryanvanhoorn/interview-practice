@@ -27,6 +27,13 @@ BONUS: Implement a function popAt(index) that performs a pop operation on a spec
         assert setOfStacks.isEmpty() == false
 
         when:
+        int peekedValue = setOfStacks.peek()
+
+        then:
+        assert peekedValue == 1
+        assert setOfStacks.isEmpty() == false
+
+        when:
         int poppedValue = setOfStacks.pop()
 
         then:
