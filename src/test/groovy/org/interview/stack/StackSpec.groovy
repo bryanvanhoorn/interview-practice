@@ -1,5 +1,8 @@
 package org.interview.stack
 
+import org.interview.animal.AnimalShelter
+import org.interview.animal.Cat
+import org.interview.animal.Dog
 import spock.lang.Specification
 
 class StackSpec extends Specification {
@@ -228,10 +231,61 @@ class StackSpec extends Specification {
         assert sortedStack.peek() == 1
     }
 
-    /*
-    Animal shelter allows people to adopt dogs or cats based on FIFO.  People must adopt the oldest (based on arrival
-    time) lf all animals at the shelter, or they can select dog or cat, and will get the oldest of the type
-    they choose.  Cannot select which specific animal.  Create the data structures to maintain this system and
-    implement operations such as enqueue, dequeueAny, dequeueDog and dequeueCat.  May use LinkedList.
-     */
+    def "should be able to enqueue and dequeue generic animals from the animal shelter"() {
+        given:
+        AnimalShelter animalShelter = new AnimalShelter()
+
+        when:
+        Cat cat = new Cat("Cat")
+        animalShelter.enqueue(cat)
+
+        Dog shiner = new Dog("Shiner")
+        animalShelter.enqueue(shiner)
+
+        Dog copper = new Dog("Copper")
+        animalShelter.enqueue(copper)
+
+        then:
+        assert animalShelter.dequeueAny() == cat
+    }
+
+    def "should be able to dequeue a dog even if it's not first in line" () {
+        given:
+        AnimalShelter animalShelter = new AnimalShelter()
+
+        when:
+        Cat cat = new Cat("Cat")
+        animalShelter.enqueue(cat)
+
+        Dog shiner = new Dog("Shiner")
+        animalShelter.enqueue(shiner)
+
+        Dog copper = new Dog("Copper")
+        animalShelter.enqueue(copper)
+
+        Dog poppedDog = animalShelter.dequeueDog()
+
+        then:
+        assert poppedDog == shiner
+    }
+
+    def "should be able to dequeue a cat even if it's not first in line" () {
+        given:
+        AnimalShelter animalShelter = new AnimalShelter()
+
+        when:
+        Dog shiner = new Dog("Shiner")
+        animalShelter.enqueue(shiner)
+
+        Cat cat = new Cat("Cat")
+        animalShelter.enqueue(cat)
+
+        Dog copper = new Dog("Copper")
+        animalShelter.enqueue(copper)
+
+        Cat poppedCat = animalShelter.dequeueCat()
+
+        then:
+        assert poppedCat == cat
+    }
 }
