@@ -32,10 +32,11 @@ public class SetOfStacks {
 
         return poppedValue;
     }
-//
-//    public int peek () {
-//
-//    }
+
+    public int peek () {
+        ArrayBackedStack latestStack = listOfStacks.get(listOfStacks.size() - 1);
+        return latestStack.peek();
+    }
 
     public boolean isEmpty() {
         if (listOfStacks.isEmpty() || listOfStacks.get(0).isEmpty()) {
