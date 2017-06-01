@@ -1,19 +1,10 @@
 package org.interview.graph
 
+import org.interview.binarytree.BinaryTreeNode
+import org.interview.binarytree.BinaryTreeUtils
 import spock.lang.Specification
-import spock.lang.Unroll
 
 class TreeAndGraphSpec extends Specification {
-
-    /*
-    Route between nodes - given a directed graph, design an algorithm to find out whether there is a route
-    between two nodes.
-
-    Breadth first search.
-
-
-
-     */
 
     def "Should be able to determine if there is a route between two nodes"() {
         given:
@@ -74,10 +65,37 @@ class TreeAndGraphSpec extends Specification {
         assert actualOutput == false
     }
 
-    /*
-    Minimal Tree:  Given a sorted (increasing order) array with unique integer elements, write an algorithm
-    to create a binary search tree with minimal height.
-     */
+    def "should be able to create a binary search tree based on a sorted array with unique elements" () {
+        //binary search tree = all left descendents <= n < all right descendents
+        given:
+        int[] integerArray = [1, 2, 3, 4, 5, 6, 7]
+
+        when:
+        BinaryTreeNode actualRootNode = BinaryTreeUtils.getBinarySearchTreeFromSortedArray(integerArray)
+
+        then:
+        BinaryTreeNode expectedBinaryTreeRootNode = getExpectedBinarySearchTree()
+        assert BinaryTreeUtils.isIdenticalBinaryTrees(actualRootNode, expectedBinaryTreeRootNode)
+    }
+
+    BinaryTreeNode getExpectedBinarySearchTree() {
+        BinaryTreeNode binaryTreeNode1 = new BinaryTreeNode(1)
+        BinaryTreeNode binaryTreeNode2 = new BinaryTreeNode(2)
+        BinaryTreeNode binaryTreeNode3 = new BinaryTreeNode(3)
+        BinaryTreeNode binaryTreeNode4 = new BinaryTreeNode(4)
+        BinaryTreeNode binaryTreeNode5 = new BinaryTreeNode(5)
+        BinaryTreeNode binaryTreeNode6 = new BinaryTreeNode(6)
+        BinaryTreeNode binaryTreeNode7 = new BinaryTreeNode(7)
+
+        binaryTreeNode4.setLeftChild(binaryTreeNode2)
+        binaryTreeNode4.setRightChild(binaryTreeNode6)
+        binaryTreeNode2.setLeftChild(binaryTreeNode1)
+        binaryTreeNode2.setRightChild(binaryTreeNode3)
+        binaryTreeNode6.setLeftChild(binaryTreeNode5)
+        binaryTreeNode6.setRightChild(binaryTreeNode7)
+
+        return binaryTreeNode4
+    }
 
     /*
     List of Depths: Given a binary tree, design an algorithm which creates a linked list of all the nodes at
