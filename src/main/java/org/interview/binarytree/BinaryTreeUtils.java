@@ -1,9 +1,6 @@
 package org.interview.binarytree;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class BinaryTreeUtils {
 
@@ -65,5 +62,41 @@ public class BinaryTreeUtils {
         rootNode.setRightChild(getBinarySearchTreeFromSortedArray(rightSideArray));
 
         return rootNode;
+    }
+
+    public static ArrayList<LinkedList<BinaryTreeNode>> getLinkedListsForEachDepth(BinaryTreeNode rootNode) {
+        ArrayList<LinkedList<BinaryTreeNode>> listOfLinkedLists = new ArrayList<>();
+
+        Queue<LinkedList<BinaryTreeNode>> nodeQueue = new LinkedList<>();
+        LinkedList<BinaryTreeNode> level0LinkedList = new LinkedList<>();
+        level0LinkedList.add(rootNode);
+        nodeQueue.add(level0LinkedList);
+        listOfLinkedLists.add(level0LinkedList);
+
+        while(nodeQueue.isEmpty() == false) {
+
+            LinkedList<BinaryTreeNode> previousLevelLinkedList = nodeQueue.remove();
+            LinkedList<BinaryTreeNode> currentLevelLinkedList = new LinkedList<>();
+
+            Iterator<BinaryTreeNode> listIterator = previousLevelLinkedList.listIterator();
+            while(listIterator.hasNext()) {
+                BinaryTreeNode node = listIterator.next();
+
+                if (node.getLeftChild() != null) {
+                    currentLevelLinkedList.add(node.getLeftChild());
+                }
+                if (node.getRightChild() != null) {
+                    currentLevelLinkedList.addLast(node.getRightChild());
+                }
+
+            }
+
+            if (currentLevelLinkedList.size() > 0) {
+                nodeQueue.add(currentLevelLinkedList);
+                listOfLinkedLists.add(currentLevelLinkedList);
+            }
+        }
+
+        return listOfLinkedLists;
     }
 }

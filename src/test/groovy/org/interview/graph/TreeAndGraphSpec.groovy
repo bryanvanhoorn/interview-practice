@@ -97,10 +97,46 @@ class TreeAndGraphSpec extends Specification {
         return binaryTreeNode4
     }
 
-    /*
-    List of Depths: Given a binary tree, design an algorithm which creates a linked list of all the nodes at
-    each depth, (e.g. if you have a tree with depth D, you'll have D linked lists).
-     */
+    def "should be able to analyze a binary tree and create linked lists of the nodes at each depth D" () {
+        given:
+        BinaryTreeNode rootNode = getBinaryTree()
+
+        when:
+        ArrayList<LinkedList<BinaryTreeNode>> linkedLists = BinaryTreeUtils.getLinkedListsForEachDepth(rootNode)
+
+        then:
+        assert linkedLists.get(0).size() == 1
+        assert linkedLists.get(0).pop().data == 1
+
+        assert linkedLists.get(1).size() == 2
+        assert linkedLists.get(1).removeFirst().data == 2
+        assert linkedLists.get(1).removeFirst().data == 3
+
+        assert linkedLists.get(2).size() == 4
+        assert linkedLists.get(2).removeFirst().data == 4
+        assert linkedLists.get(2).removeFirst().data == 5
+        assert linkedLists.get(2).removeFirst().data == 6
+        assert linkedLists.get(2).removeFirst().data == 7
+    }
+
+    BinaryTreeNode getBinaryTree() {
+        BinaryTreeNode binaryTreeNode1 = new BinaryTreeNode(1)
+        BinaryTreeNode binaryTreeNode2 = new BinaryTreeNode(2)
+        BinaryTreeNode binaryTreeNode3 = new BinaryTreeNode(3)
+        BinaryTreeNode binaryTreeNode4 = new BinaryTreeNode(4)
+        BinaryTreeNode binaryTreeNode5 = new BinaryTreeNode(5)
+        BinaryTreeNode binaryTreeNode6 = new BinaryTreeNode(6)
+        BinaryTreeNode binaryTreeNode7 = new BinaryTreeNode(7)
+
+        binaryTreeNode1.setLeftChild(binaryTreeNode2)
+        binaryTreeNode1.setRightChild(binaryTreeNode3)
+        binaryTreeNode2.setLeftChild(binaryTreeNode4)
+        binaryTreeNode2.setRightChild(binaryTreeNode5)
+        binaryTreeNode3.setLeftChild(binaryTreeNode6)
+        binaryTreeNode3.setRightChild(binaryTreeNode7)
+
+        return binaryTreeNode1
+    }
 
     /*
     Check Balanced:  Implement a function to check if a binary tree is balanced.  For the purposes of this
