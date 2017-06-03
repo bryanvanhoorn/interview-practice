@@ -99,4 +99,28 @@ public class BinaryTreeUtils {
 
         return listOfLinkedLists;
     }
+
+    public static boolean isBalanced(BinaryTreeNode rootNode) {
+
+        if (rootNode == null) {
+            return true;
+        }
+
+        int heightDiff = getHeight(rootNode.getLeftChild()) - getHeight(rootNode.getRightChild());
+
+        if (Math.abs(heightDiff) > 1) {
+            return false;
+        } else {
+            return isBalanced(rootNode.getLeftChild()) && isBalanced(rootNode.getRightChild());
+        }
+    }
+
+    private static int getHeight(BinaryTreeNode node) {
+
+        if (node == null) {
+            return -1;
+        }
+
+        return Math.max(getHeight(node.getLeftChild()), getHeight(node.getRightChild())) + 1;
+    }
 }

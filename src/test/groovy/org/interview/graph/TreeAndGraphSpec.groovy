@@ -137,12 +137,53 @@ class TreeAndGraphSpec extends Specification {
 
         return binaryTreeNode1
     }
+    
+    def "should be able to check if a binary tree is balanced"() {
+        given:
+        BinaryTreeNode rootNode = getBinaryTree()
 
-    /*
-    Check Balanced:  Implement a function to check if a binary tree is balanced.  For the purposes of this
-    question, a balanced tree is defined to be a tree such that the heights of the two subtrees of any node
-    never differ by more than one.
-     */
+        when:
+        boolean actualOutput = BinaryTreeUtils.isBalanced(rootNode)
+
+        then:
+        assert actualOutput == true
+    }
+
+    def "should be able to check if a binary tree is NOT balanced" () {
+        given:
+        BinaryTreeNode rootNode = getUnbalancedBinaryTree()
+
+        when:
+        boolean actualOutput = BinaryTreeUtils.isBalanced(rootNode)
+
+        then:
+        assert actualOutput == false
+    }
+
+    BinaryTreeNode getUnbalancedBinaryTree() {
+        BinaryTreeNode binaryTreeNode1 = new BinaryTreeNode(1)
+        BinaryTreeNode binaryTreeNode2 = new BinaryTreeNode(2)
+        BinaryTreeNode binaryTreeNode3 = new BinaryTreeNode(3)
+        BinaryTreeNode binaryTreeNode4 = new BinaryTreeNode(4)
+        BinaryTreeNode binaryTreeNode5 = new BinaryTreeNode(5)
+        BinaryTreeNode binaryTreeNode6 = new BinaryTreeNode(6)
+        BinaryTreeNode binaryTreeNode7 = new BinaryTreeNode(7)
+        BinaryTreeNode binaryTreeNode8 = new BinaryTreeNode(8)
+        BinaryTreeNode binaryTreeNode9 = new BinaryTreeNode(9)
+        BinaryTreeNode binaryTreeNode10 = new BinaryTreeNode(10)
+
+        binaryTreeNode1.setLeftChild(binaryTreeNode2)
+        binaryTreeNode1.setRightChild(binaryTreeNode3)
+        binaryTreeNode2.setLeftChild(binaryTreeNode4)
+        binaryTreeNode2.setRightChild(binaryTreeNode5)
+        binaryTreeNode3.setLeftChild(binaryTreeNode6)
+        binaryTreeNode3.setRightChild(binaryTreeNode7)
+        binaryTreeNode7.setLeftChild(binaryTreeNode8)
+        binaryTreeNode7.setRightChild(binaryTreeNode9)
+        binaryTreeNode9.setLeftChild(binaryTreeNode10)
+
+        return binaryTreeNode1
+    }
 
     /*
     Validate BST: Implement a function to check if a binary tree is a binary search tree.
