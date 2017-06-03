@@ -149,4 +149,70 @@ public class BinaryTreeUtils {
             return isSubtreeBinarySearchTree(node.getLeftChild()) && isSubtreeBinarySearchTree(node.getRightChild());
         }
     }
+
+    // Successor of current node is leftmost node of right subtree
+    // If current node does not have a right subtree, start working back up the tree
+    public static BinaryTreeNode getNextNodeInBinarySearchTree(BinaryTreeNode inputNode) {
+
+        if (inputNode.getRightChild() != null) {
+            // get leftmost child of this right child
+            BinaryTreeNode childNode = inputNode.getRightChild();
+
+            if (childNode.getLeftChild() != null) {
+                return getLeftmostChild(childNode);
+            }
+
+            return childNode;
+        } else {
+            // find a parent node that has a node to the right of me
+            if (inputNode.getParentNode() == null) {
+                // if right child and parent node are both null, then this is the rightmost
+                // node - there is no next node
+                return null;
+            }
+
+            BinaryTreeNode parentNode = inputNode.getParentNode();
+            if (parentNode.getRightChild() == inputNode) {
+                // this node is the right child of its parent, so we need to start working up the tree
+                // this node's parent is less than it, but grandparent could be next
+                BinaryTreeNode grandparentNode = parentNode.getParentNode();
+                if (grandparentNode == null) {
+                    // parent node is the root, and this is its right child.  there is no next node
+                    return null;
+                } else {
+                    // move up the tree until we hit the root, (which means this node is already right most)
+                    // or until we find a grandparent node where its right child is not the previous parent
+                    while(grandparentNode != null && grandparentNode.getRightChild() == parentNode) {
+                        parentNode = grandparentNode;
+                        grandparentNode = parentNode.getParentNode();
+                    }
+
+                    if (grandparentNode == null) {
+                        // we hit the top of the tree, so this node is the right most
+                        return null;
+                    } else {
+                        // grandparent node has a right child that is not in the subtree we came from
+                        // either grandparent is next, or we need to get its leftmost node under the right child
+                        if (grandparentNode.getLeftChild() == parentNode) {
+                            // we came up from the left, which means the grandparent is next
+                            return grandparentNode;
+                        }
+
+                        return getLeftmostChild(grandparentNode.getRightChild());
+                    }
+                }
+            } else {
+                // this node is the left child - the parent node should be next
+                return parentNode;
+            }
+        }
+    }
+
+    private static BinaryTreeNode getLeftmostChild(BinaryTreeNode node) {
+        while(node.getLeftChild() != null) {
+            node = node.getLeftChild();
+        }
+
+        return node;
+    }
 }

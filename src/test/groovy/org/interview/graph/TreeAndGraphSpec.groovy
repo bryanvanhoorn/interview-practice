@@ -3,6 +3,7 @@ package org.interview.graph
 import org.interview.binarytree.BinaryTreeNode
 import org.interview.binarytree.BinaryTreeUtils
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class TreeAndGraphSpec extends Specification {
 
@@ -211,7 +212,49 @@ class TreeAndGraphSpec extends Specification {
     /*
     Successor: Write an algorithm to find the "next" node (i.e. in-order successor) of a given node in a
     binary search tree.  You may assume that each node has a link to its parent.
+
+    if left child, check parent
+
+    if right child, check parent
+        if parent is less
+
+    check parent
+
      */
+    def "should be able to find the next node for a given node in a binary search tree"() {
+        given:
+        BinaryTreeNode binaryTreeNode1 = new BinaryTreeNode(1)
+        BinaryTreeNode binaryTreeNode2 = new BinaryTreeNode(2)
+        BinaryTreeNode binaryTreeNode3 = new BinaryTreeNode(3)
+        BinaryTreeNode binaryTreeNode4 = new BinaryTreeNode(4)
+        BinaryTreeNode binaryTreeNode5 = new BinaryTreeNode(5)
+        BinaryTreeNode binaryTreeNode6 = new BinaryTreeNode(6)
+        BinaryTreeNode binaryTreeNode7 = new BinaryTreeNode(7)
+
+        binaryTreeNode4.setLeftChild(binaryTreeNode2)
+        binaryTreeNode2.setParentNode(binaryTreeNode4)
+
+        binaryTreeNode4.setRightChild(binaryTreeNode6)
+        binaryTreeNode6.setParentNode(binaryTreeNode4)
+
+        binaryTreeNode2.setLeftChild(binaryTreeNode1)
+        binaryTreeNode1.setParentNode(binaryTreeNode2)
+
+        binaryTreeNode2.setRightChild(binaryTreeNode3)
+        binaryTreeNode3.setParentNode(binaryTreeNode2)
+
+        binaryTreeNode6.setLeftChild(binaryTreeNode5)
+        binaryTreeNode5.setParentNode(binaryTreeNode6)
+
+        binaryTreeNode6.setRightChild(binaryTreeNode7)
+        binaryTreeNode7.setParentNode(binaryTreeNode6)
+
+        when:
+        BinaryTreeNode actualNextNode = BinaryTreeUtils.getNextNodeInBinarySearchTree(binaryTreeNode7)
+
+        then:
+        assert actualNextNode == null
+    }
 
     /*
     Build Order:  You are given a list of projects and a list of dependencies (which is a list of pairs of

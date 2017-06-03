@@ -9,6 +9,7 @@ public class BinaryTreeNode {
 
     private BinaryTreeNode leftChild;
     private BinaryTreeNode rightChild;
+    private BinaryTreeNode parentNode;
 
     public BinaryTreeNode(int data) {
         this.data = data;
