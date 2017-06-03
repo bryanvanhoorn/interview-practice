@@ -123,4 +123,30 @@ public class BinaryTreeUtils {
 
         return Math.max(getHeight(node.getLeftChild()), getHeight(node.getRightChild())) + 1;
     }
+
+    /*
+    Binary Search Tree - all left descendents <= n < all right descendents
+     */
+    public static boolean isBinarySearchTree(BinaryTreeNode rootNode) {
+        return isSubtreeBinarySearchTree(rootNode);
+    }
+
+    private static boolean isSubtreeBinarySearchTree(BinaryTreeNode node) {
+        if (node == null) {
+            return true;
+        }
+
+        int rootNodeData = node.getData();
+        int leftChildData = node.getLeftChild() != null ? node.getLeftChild().getData() : 0;
+        // If there is no right child, set the value to root's data + 1 to force it to evaluate true
+        int rightChildData = node.getRightChild() != null ? node.getRightChild().getData() : rootNodeData + 1;
+
+        boolean isBinary = leftChildData <= node.getData() && node.getData() < rightChildData;
+
+        if (isBinary == false) {
+            return false;
+        } else {
+            return isSubtreeBinarySearchTree(node.getLeftChild()) && isSubtreeBinarySearchTree(node.getRightChild());
+        }
+    }
 }

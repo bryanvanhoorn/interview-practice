@@ -137,7 +137,7 @@ class TreeAndGraphSpec extends Specification {
 
         return binaryTreeNode1
     }
-    
+
     def "should be able to check if a binary tree is balanced"() {
         given:
         BinaryTreeNode rootNode = getBinaryTree()
@@ -187,7 +187,26 @@ class TreeAndGraphSpec extends Specification {
 
     /*
     Validate BST: Implement a function to check if a binary tree is a binary search tree.
+
+    Binary Search Tree - all left descendents <= n < all right descendents
      */
+
+    def "should be able to check if a binary tree is a binary search tree"() {
+        given:
+        BinaryTreeNode rootNode = getExpectedBinarySearchTree()
+
+        expect:
+        assert BinaryTreeUtils.isBinarySearchTree(rootNode) == true
+    }
+
+
+    def "should be able to check if a binary tree is NOT a binary search tree"() {
+        given:
+        BinaryTreeNode rootNode = getBinaryTree()
+
+        expect:
+        assert BinaryTreeUtils.isBinarySearchTree(rootNode) == false
+    }
 
     /*
     Successor: Write an algorithm to find the "next" node (i.e. in-order successor) of a given node in a
