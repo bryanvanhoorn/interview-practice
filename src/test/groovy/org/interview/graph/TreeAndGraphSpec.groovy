@@ -3,7 +3,6 @@ package org.interview.graph
 import org.interview.binarytree.BinaryTreeNode
 import org.interview.binarytree.BinaryTreeUtils
 import spock.lang.Specification
-import spock.lang.Unroll
 
 class TreeAndGraphSpec extends Specification {
 
@@ -209,18 +208,6 @@ class TreeAndGraphSpec extends Specification {
         assert BinaryTreeUtils.isBinarySearchTree(rootNode) == false
     }
 
-    /*
-    Successor: Write an algorithm to find the "next" node (i.e. in-order successor) of a given node in a
-    binary search tree.  You may assume that each node has a link to its parent.
-
-    if left child, check parent
-
-    if right child, check parent
-        if parent is less
-
-    check parent
-
-     */
     def "should be able to find the next node for a given node in a binary search tree"() {
         given:
         BinaryTreeNode binaryTreeNode1 = new BinaryTreeNode(1)
@@ -267,7 +254,111 @@ class TreeAndGraphSpec extends Specification {
         dependencies:  (a,d), (f,b), (b,d), (f,a), (d,c)
 
     Example Output:  f, e, a, b, d, c
+
+    convert dependencies into directed graph
      */
+
+    def "should be able to determine build order of projects and dependencies"() {
+        given:
+        List<String> projectList = new ArrayList<String>()
+        projectList.add("a")
+        projectList.add("b")
+        projectList.add("c")
+        projectList.add("d")
+        projectList.add("e")
+        projectList.add("f")
+
+        // Second project is dependent on the first
+        List<String> dependencyList = new ArrayList<String>()
+        dependencyList.add("a,d")
+        dependencyList.add("f,b")
+        dependencyList.add("b,d")
+        dependencyList.add("f,a")
+        dependencyList.add("d,c")
+
+        List<String> expectedBuildOrder = new ArrayList<String>()
+        expectedBuildOrder.add("f")
+        expectedBuildOrder.add("a")
+        expectedBuildOrder.add("b")
+        expectedBuildOrder.add("d")
+        expectedBuildOrder.add("c")
+        expectedBuildOrder.add("e")
+
+        when:
+        List<String> buildOrder = GraphUtils.getBuildOrder(projectList, dependencyList)
+
+        then:
+        assert buildOrder == expectedBuildOrder
+    }
+
+    def "should throw exception for invalid build order"() {
+        given:
+        List<String> projectList = new ArrayList<String>()
+        projectList.add("a")
+        projectList.add("b")
+        projectList.add("c")
+        projectList.add("d")
+        projectList.add("e")
+        projectList.add("f")
+
+        // Second project is dependent on the first
+        List<String> dependencyList = new ArrayList<String>()
+        dependencyList.add("a,d")
+        dependencyList.add("f,b")
+        dependencyList.add("b,d")
+        dependencyList.add("f,a")
+        dependencyList.add("d,c")
+        dependencyList.add("g,f")
+
+        List<String> expectedBuildOrder = new ArrayList<String>()
+        expectedBuildOrder.add("f")
+        expectedBuildOrder.add("a")
+        expectedBuildOrder.add("b")
+        expectedBuildOrder.add("d")
+        expectedBuildOrder.add("c")
+        expectedBuildOrder.add("e")
+
+        when:
+        List<String> buildOrder = GraphUtils.getBuildOrder(projectList, dependencyList)
+
+        then:
+        thrown(Exception)
+        println(Exception.toString())
+    }
+
+    def "should throw exception if we're dependent on a project not in our list"() {
+        given:
+        List<String> projectList = new ArrayList<String>()
+        projectList.add("a")
+        projectList.add("b")
+        projectList.add("c")
+        projectList.add("d")
+        projectList.add("e")
+        projectList.add("f")
+
+        // Second project is dependent on the first
+        List<String> dependencyList = new ArrayList<String>()
+        dependencyList.add("a,d")
+        dependencyList.add("f,b")
+        dependencyList.add("b,d")
+        dependencyList.add("f,a")
+        dependencyList.add("d,c")
+        dependencyList.add("d,f")
+
+        List<String> expectedBuildOrder = new ArrayList<String>()
+        expectedBuildOrder.add("f")
+        expectedBuildOrder.add("a")
+        expectedBuildOrder.add("b")
+        expectedBuildOrder.add("d")
+        expectedBuildOrder.add("c")
+        expectedBuildOrder.add("e")
+
+        when:
+        List<String> buildOrder = GraphUtils.getBuildOrder(projectList, dependencyList)
+
+        then:
+        thrown(Exception)
+    }
 
     /*
     First Common Ancestor:  Design an algorithm and write code to find the first common ancestor of two

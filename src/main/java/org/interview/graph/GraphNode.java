@@ -10,7 +10,7 @@ public class GraphNode {
 
     @Getter
     @Setter
-    private GraphNode[] children;
+    private GraphNode[] children = new GraphNode[16];
 
     public enum state {VISITED, VISITING, UNVISITED}
 
