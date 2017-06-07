@@ -387,6 +387,7 @@ class TreeAndGraphSpec extends Specification {
         BinaryTreeNode binaryTreeNode9 = new BinaryTreeNode(9)
         BinaryTreeNode binaryTreeNode10 = new BinaryTreeNode(10)
         BinaryTreeNode binaryTreeNode11 = new BinaryTreeNode(11)
+        BinaryTreeNode binaryTreeNode12 = new BinaryTreeNode(12)
 
         binaryTreeNode1.setLeftChild(binaryTreeNode2)
         binaryTreeNode1.setRightChild(binaryTreeNode3)
@@ -396,17 +397,17 @@ class TreeAndGraphSpec extends Specification {
         binaryTreeNode3.setRightChild(binaryTreeNode7)
         binaryTreeNode4.setLeftChild(binaryTreeNode8)
         binaryTreeNode4.setRightChild(binaryTreeNode9)
-        binaryTreeNode9.setLeftChild(binaryTreeNode10)
-        binaryTreeNode9.setRightChild(binaryTreeNode11)
+        binaryTreeNode5.setLeftChild(binaryTreeNode10)
+        binaryTreeNode5.setRightChild(binaryTreeNode11)
 
         BinaryTreeNode rootNode = binaryTreeNode1
 
         when:
         // we call the code to return the common ancestor
-        BinaryTreeNode actualAncestor = BinaryTreeUtils.getCommonAncestor(rootNode, binaryTreeNode8, binaryTreeNode5)
+        BinaryTreeNode actualAncestor = BinaryTreeUtils.getCommonAncestor(rootNode, binaryTreeNode10, binaryTreeNode11)
 
         then:
-        assert actualAncestor == binaryTreeNode2
+        assert actualAncestor == binaryTreeNode5
     }
 
     /*

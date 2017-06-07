@@ -218,67 +218,42 @@ public class BinaryTreeUtils {
 
     public static BinaryTreeNode getCommonAncestor(BinaryTreeNode rootNode, BinaryTreeNode node1, BinaryTreeNode node2) {
 
-        if (hasChild(rootNode, node1) == false || hasChild(rootNode, node2) == false) {
+        if (covers(rootNode, node1) == false || covers(rootNode, node2) == false) {
             // one node or the other does not exist in the tree, so there are no common ancestors
             return null;
         }
 
-        BinaryTreeNode ancestorNode = rootNode;
-        List<BinaryTreeNode> rootLevelNode = new ArrayList<>();
-        rootLevelNode.add(ancestorNode);
+        return ancestorHelper(rootNode, node1, node2);
+    }
 
-        Queue<BinaryTreeNode> queueOfNodes = new LinkedList<>();
-        queueOfNodes.add(rootNode);
-
-        boolean ancestorFound = false;
-        while(queueOfNodes.isEmpty() == false && ancestorFound == false) {
-            BinaryTreeNode nodeToCheck = queueOfNodes.remove();
-
-            boolean leftChildIsAncestor = false;
-            boolean rightChildIsAncestor = false;
-
-            if (nodeToCheck.getLeftChild() != null) {
-                BinaryTreeNode leftChildNode = nodeToCheck.getLeftChild();
-
-                if(leftChildNode == node1 || leftChildNode == node2) {
-                    // the previous level must be the lowest common ancestor
-                    ancestorFound = true;
-                    ancestorNode = nodeToCheck;
-                    leftChildIsAncestor = true;
-                } else {
-                    leftChildIsAncestor = hasChild(leftChildNode, node1) && hasChild(leftChildNode, node2);
-                }
-            }
-
-            if (nodeToCheck.getRightChild() != null) {
-                BinaryTreeNode rightChildNode = nodeToCheck.getRightChild();
-
-                if(rightChildNode == node1 || rightChildNode == node2) {
-                    // the previous level must be the lowest common ancestor
-                    ancestorFound = true;
-                    ancestorNode = nodeToCheck;
-                    rightChildIsAncestor = true;
-                } else {
-                    rightChildIsAncestor = hasChild(rightChildNode, node1) && hasChild(rightChildNode, node2);
-                }
-            }
-
-            if (leftChildIsAncestor && rightChildIsAncestor) {
-                // nodeToCheck is the common ancestor
-                ancestorNode = nodeToCheck;
-                ancestorFound = true;
-            } else if (leftChildIsAncestor) {
-                queueOfNodes.add(nodeToCheck.getLeftChild());
-            } else if (rightChildIsAncestor) {
-                queueOfNodes.add(nodeToCheck.getRightChild());
-            } else {
-                // if neither one of the child nodes has both nodes we're looking for, the parent must be right
-                ancestorNode = nodeToCheck;
-                ancestorFound = true;
-            }
+    private static BinaryTreeNode ancestorHelper(BinaryTreeNode rootNode, BinaryTreeNode node1, BinaryTreeNode node2){
+        if (rootNode == null || rootNode == node1 || rootNode == node2) {
+            return rootNode;
         }
 
-        return ancestorNode;
+        boolean leftChildIsAncestorOfNode1 = covers(rootNode.getLeftChild(), node1);
+        boolean leftChildIsAncestorOfNode2 = covers(rootNode.getLeftChild(), node2);
+
+        if (leftChildIsAncestorOfNode1 != leftChildIsAncestorOfNode2) {
+            // nodes are in different subtrees. parent must be the ancestor
+            return rootNode;
+        }
+
+        BinaryTreeNode nextNodeToSearch = leftChildIsAncestorOfNode1 ? rootNode.getLeftChild() : rootNode.getRightChild();
+
+        return ancestorHelper(nextNodeToSearch, node1, node2);
+    }
+
+    private static boolean covers(BinaryTreeNode rootNode, BinaryTreeNode possibleChildNode) {
+        if (rootNode == null) {
+            return false;
+        }
+
+        if (rootNode == possibleChildNode) {
+            return true;
+        }
+
+        return covers(rootNode.getLeftChild(), possibleChildNode) || covers(rootNode.getRightChild(), possibleChildNode);
     }
 
     private static boolean hasChild(BinaryTreeNode parentNode, BinaryTreeNode possibleChildNode) {
