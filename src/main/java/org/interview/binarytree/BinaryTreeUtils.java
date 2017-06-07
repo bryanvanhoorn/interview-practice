@@ -18,7 +18,7 @@ public class BinaryTreeUtils {
 
         nodeQueue.add(rootNode);
 
-        while(nodeQueue.isEmpty() == false) {
+        while (nodeQueue.isEmpty() == false) {
             BinaryTreeNode treeNode = nodeQueue.remove();
             treeNodeList.add(treeNode);
 
@@ -43,9 +43,9 @@ public class BinaryTreeUtils {
         // find root node - middle value of list
         int midpointIndex;
         if (array.length % 2 == 0) {
-            midpointIndex = (int) Math.ceil(array.length/2.0);
+            midpointIndex = (int) Math.ceil(array.length / 2.0);
         } else {
-            midpointIndex = (int) Math.ceil((array.length - 1)/2.0);
+            midpointIndex = (int) Math.ceil((array.length - 1) / 2.0);
         }
 
         int rootNodeData = array[midpointIndex];
@@ -73,13 +73,13 @@ public class BinaryTreeUtils {
         nodeQueue.add(level0LinkedList);
         listOfLinkedLists.add(level0LinkedList);
 
-        while(nodeQueue.isEmpty() == false) {
+        while (nodeQueue.isEmpty() == false) {
 
             LinkedList<BinaryTreeNode> previousLevelLinkedList = nodeQueue.remove();
             LinkedList<BinaryTreeNode> currentLevelLinkedList = new LinkedList<>();
 
             Iterator<BinaryTreeNode> listIterator = previousLevelLinkedList.listIterator();
-            while(listIterator.hasNext()) {
+            while (listIterator.hasNext()) {
                 BinaryTreeNode node = listIterator.next();
 
                 if (node.getLeftChild() != null) {
@@ -182,7 +182,7 @@ public class BinaryTreeUtils {
                 } else {
                     // move up the tree until we hit the root, (which means this node is already right most)
                     // or until we find a grandparent node where its right child is not the previous parent
-                    while(grandparentNode != null && grandparentNode.getRightChild() == parentNode) {
+                    while (grandparentNode != null && grandparentNode.getRightChild() == parentNode) {
                         parentNode = grandparentNode;
                         grandparentNode = parentNode.getParentNode();
                     }
@@ -209,10 +209,104 @@ public class BinaryTreeUtils {
     }
 
     private static BinaryTreeNode getLeftmostChild(BinaryTreeNode node) {
-        while(node.getLeftChild() != null) {
+        while (node.getLeftChild() != null) {
             node = node.getLeftChild();
         }
 
         return node;
+    }
+
+    public static BinaryTreeNode getCommonAncestor(BinaryTreeNode rootNode, BinaryTreeNode node1, BinaryTreeNode node2) {
+
+        if (hasChild(rootNode, node1) == false || hasChild(rootNode, node2) == false) {
+            // one node or the other does not exist in the tree, so there are no common ancestors
+            return null;
+        }
+
+        BinaryTreeNode ancestorNode = rootNode;
+        List<BinaryTreeNode> rootLevelNode = new ArrayList<>();
+        rootLevelNode.add(ancestorNode);
+
+        Queue<BinaryTreeNode> queueOfNodes = new LinkedList<>();
+        queueOfNodes.add(rootNode);
+
+        boolean ancestorFound = false;
+        while(queueOfNodes.isEmpty() == false && ancestorFound == false) {
+            BinaryTreeNode nodeToCheck = queueOfNodes.remove();
+
+            boolean leftChildIsAncestor = false;
+            boolean rightChildIsAncestor = false;
+
+            if (nodeToCheck.getLeftChild() != null) {
+                BinaryTreeNode leftChildNode = nodeToCheck.getLeftChild();
+
+                if(leftChildNode == node1 || leftChildNode == node2) {
+                    // the previous level must be the lowest common ancestor
+                    ancestorFound = true;
+                    ancestorNode = nodeToCheck;
+                    leftChildIsAncestor = true;
+                } else {
+                    leftChildIsAncestor = hasChild(leftChildNode, node1) && hasChild(leftChildNode, node2);
+                }
+            }
+
+            if (nodeToCheck.getRightChild() != null) {
+                BinaryTreeNode rightChildNode = nodeToCheck.getRightChild();
+
+                if(rightChildNode == node1 || rightChildNode == node2) {
+                    // the previous level must be the lowest common ancestor
+                    ancestorFound = true;
+                    ancestorNode = nodeToCheck;
+                    rightChildIsAncestor = true;
+                } else {
+                    rightChildIsAncestor = hasChild(rightChildNode, node1) && hasChild(rightChildNode, node2);
+                }
+            }
+
+            if (leftChildIsAncestor && rightChildIsAncestor) {
+                // nodeToCheck is the common ancestor
+                ancestorNode = nodeToCheck;
+                ancestorFound = true;
+            } else if (leftChildIsAncestor) {
+                queueOfNodes.add(nodeToCheck.getLeftChild());
+            } else if (rightChildIsAncestor) {
+                queueOfNodes.add(nodeToCheck.getRightChild());
+            } else {
+                // if neither one of the child nodes has both nodes we're looking for, the parent must be right
+                ancestorNode = nodeToCheck;
+                ancestorFound = true;
+            }
+        }
+
+        return ancestorNode;
+    }
+
+    private static boolean hasChild(BinaryTreeNode parentNode, BinaryTreeNode possibleChildNode) {
+        if (parentNode == possibleChildNode) {
+            return true;
+        }
+
+        boolean nodeFound = false;
+        Queue<BinaryTreeNode> queue = new LinkedList<>();
+
+        queue.add(parentNode);
+
+        while(queue.isEmpty() == false && nodeFound == false) {
+            BinaryTreeNode node = queue.remove();
+
+            if (node == possibleChildNode) {
+                nodeFound = true;
+            }
+
+            if(node.getLeftChild() != null) {
+                queue.add(node.getLeftChild());
+            }
+
+            if(node.getRightChild() != null) {
+                queue.add(node.getRightChild());
+            }
+        }
+
+        return nodeFound;
     }
 }

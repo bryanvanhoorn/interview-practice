@@ -364,7 +364,50 @@ class TreeAndGraphSpec extends Specification {
     First Common Ancestor:  Design an algorithm and write code to find the first common ancestor of two
     nodes in a binary tree. Avoid storing additional nodes in a data structure.  Note: this is not necessarily
     a binary search tree.
+
+    start with root
+    find path to node1, find path to node2
+    are they in the same subtree of root?
+        if not, then root is their first common ancestor
+    else, move to the next descendent of root, do the check again
+    what if one of the nodes isn't in the tree at all?
+
+    not efficient, but may get the job done
      */
+    def "should be able to find the first common ancestor of two nodes in a binary tree"() {
+        given:
+        BinaryTreeNode binaryTreeNode1 = new BinaryTreeNode(1)
+        BinaryTreeNode binaryTreeNode2 = new BinaryTreeNode(2)
+        BinaryTreeNode binaryTreeNode3 = new BinaryTreeNode(3)
+        BinaryTreeNode binaryTreeNode4 = new BinaryTreeNode(4)
+        BinaryTreeNode binaryTreeNode5 = new BinaryTreeNode(5)
+        BinaryTreeNode binaryTreeNode6 = new BinaryTreeNode(6)
+        BinaryTreeNode binaryTreeNode7 = new BinaryTreeNode(7)
+        BinaryTreeNode binaryTreeNode8 = new BinaryTreeNode(8)
+        BinaryTreeNode binaryTreeNode9 = new BinaryTreeNode(9)
+        BinaryTreeNode binaryTreeNode10 = new BinaryTreeNode(10)
+        BinaryTreeNode binaryTreeNode11 = new BinaryTreeNode(11)
+
+        binaryTreeNode1.setLeftChild(binaryTreeNode2)
+        binaryTreeNode1.setRightChild(binaryTreeNode3)
+        binaryTreeNode2.setLeftChild(binaryTreeNode4)
+        binaryTreeNode2.setRightChild(binaryTreeNode5)
+        binaryTreeNode3.setLeftChild(binaryTreeNode6)
+        binaryTreeNode3.setRightChild(binaryTreeNode7)
+        binaryTreeNode4.setLeftChild(binaryTreeNode8)
+        binaryTreeNode4.setRightChild(binaryTreeNode9)
+        binaryTreeNode9.setLeftChild(binaryTreeNode10)
+        binaryTreeNode9.setRightChild(binaryTreeNode11)
+
+        BinaryTreeNode rootNode = binaryTreeNode1
+
+        when:
+        // we call the code to return the common ancestor
+        BinaryTreeNode actualAncestor = BinaryTreeUtils.getCommonAncestor(rootNode, binaryTreeNode8, binaryTreeNode5)
+
+        then:
+        assert actualAncestor == binaryTreeNode2
+    }
 
     /*
     BST Sequences: A binary search tree was created by traversing through an array from left to right
